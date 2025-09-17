@@ -1,4 +1,4 @@
-name: CI
+name: Build Checks
 
 on:
   pull_request:
@@ -7,33 +7,51 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+# ------------- #
+# Core projects #
+# ------------- #
+  build_code:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-      - name: Restore dependencies
-        run: dotnet restore
-        working-directory: ./src
-      - name: Build
-        run: dotnet build --configuration Debug --no-restore
-        working-directory: ./src
+      - name: Build dotnet projects
+        run: |
+          dotnet build src/eBar.Api/eBar.Api.csproj --configuration Release
 
-  test:
+  test_core:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_core
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-      - name: Restore dependencies
-        run: dotnet restore
-        working-directory: ./src
-      - name: Test
-        run: dotnet test --configuration Debug --verbosity normal
-        working-directory: ./src
+        run: |
+          dotnet test src/eBar.UnitTests/eBar.UnitTests.csproj --no-build --verbosity normal
+
+# ------------------ #
+# Framework projects #
+# ------------------ #
+  build_framework:
+    runs-on: windows-latest
+    steps:
+    - name: Setup MSBuild
+      run: echo "no .Net Framework applications. Skipped"
+      # - uses: actions/checkout@v3
+      # - uses: microsoft/setup-msbuild@v2
+      #   run: |
+      #     msbuild src/eBar.Waiter/eBar.Waiter.csproj /p:Configuration=Release
+
+  test_framework:
+    runs-on: windows-latest
+    needs: build_framework
+    steps:
+    - name: Setup MSBuild
+      run: echo "no .Net Framework applications. Skipped"
+      # - uses: actions/checkout@v3
+      # - uses: microsoft/setup-msbuild@v2
+      #   run: |
+      #     vstest.console.exe src/eBar.WinUnitTests/bin/Release/*.dll
