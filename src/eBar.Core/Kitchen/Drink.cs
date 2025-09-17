@@ -2,7 +2,6 @@
 {
     public class Drink : OrderPosition
     {
-        public string Name {get; set;}
         public DrinkType Type {get; set;}
 
         public Drink(string name, DrinkType type)
@@ -14,7 +13,7 @@
     
     public enum DrinkType
         {
-        non_alcohol,
-        alcohol
+        Non_alcohol,
+        Alcohol
         }
 }

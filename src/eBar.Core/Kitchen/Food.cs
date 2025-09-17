@@ -2,7 +2,6 @@
 {
     public class Food : OrderPosition
     {
-        public string Name {get; set;}
         public FoodType Type {get; set;}
 
         public Food(string name, FoodType type)
@@ -16,6 +15,6 @@
     {
         Hot,
         Cold,
-        snacks
+        Snacks
     }
 }

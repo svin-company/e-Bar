@@ -1,5 +1,4 @@
 ﻿using eBar.Core.Kitchen;
-using NUnit.Framework;
 
 namespace eBar.UnitTests;
 
@@ -19,7 +18,7 @@ public class Tests
     [Test]
     public void Order_Test()
     {
-        var drink = new Drink("Cola", DrinkType.non_alcohol);
+        var drink = new Drink("Cola", DrinkType.Non_alcohol);
         Assert.That("Cola" == drink.Name);
 
         var food = new Food("burgir", FoodType.Hot);
