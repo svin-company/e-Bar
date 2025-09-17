@@ -18,7 +18,7 @@ public class Tests
     [Test]
     public void Order_Test()
     {
-        var drink = new Drink("Cola", DrinkType.Non_alcohol);
+        var drink = new Drink("Cola", DrinkType.NonAlcohol);
         Assert.That("Cola" == drink.Name);
 
         var food = new Food("burgir", FoodType.Hot);

@@ -13,7 +13,7 @@
     
     public enum DrinkType
         {
-        Non_alcohol,
+        NonAlcohol,
         Alcohol
         }
 }
