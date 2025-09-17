@@ -10,7 +10,7 @@ jobs:
 # ------------- #
 # Core projects #
 # ------------- #
-  build_code:
+  build_core:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
