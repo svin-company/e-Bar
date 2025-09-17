@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.Api", "eBar.Api\eBar.Api.csproj", "{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.Core", "eBar.Core\eBar.Core.csproj", "{16EF8798-A523-47D0-96FC-5BB669EAAC62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +31,9 @@ Global
 		{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

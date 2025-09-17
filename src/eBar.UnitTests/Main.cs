@@ -1,4 +1,6 @@
-﻿namespace eBar.UnitTests;
+﻿using eBar.Core.Kitchen;
+
+namespace eBar.UnitTests;
 
 public class Tests
 {
@@ -11,5 +13,15 @@ public class Tests
     public void MainTest()
     {
         Assert.Pass();
+    }
+
+    [Test]
+    public void Order_Test()
+    {
+        var drink = new Drink("Cola", DrinkType.NonAlcohol);
+        Assert.That("Cola" == drink.Name);
+
+        var food = new Food("burgir", FoodType.Hot);
+        Assert.That("burgir" == food.Name);
     }
 }
