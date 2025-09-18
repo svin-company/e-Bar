@@ -55,4 +55,4 @@ nunit-*.xml
 
 .idea
 .vs
-docker-compose.yml
+.env
