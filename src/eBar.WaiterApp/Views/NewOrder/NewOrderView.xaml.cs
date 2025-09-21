@@ -1,5 +1,5 @@
-﻿using eBar.WaiterApp.Models;
-using eBar.WaiterApp.ViewModels;
+﻿using eBar.WaiterApp.Model;
+using eBar.WaiterApp.ViewModel;
 using System.Windows;
 
 

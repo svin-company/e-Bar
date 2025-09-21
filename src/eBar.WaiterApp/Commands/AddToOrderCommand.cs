@@ -1,8 +1,8 @@
-﻿using eBar.WaiterApp.Models;
+﻿using eBar.WaiterApp.Model;
 
 namespace eBar.WaiterApp.Commands
 {
-    class AddToOrderCommand : BaseCommand
+    public class AddToOrderCommand : BaseCommand
     {
         public Order Order { get; set; }
 

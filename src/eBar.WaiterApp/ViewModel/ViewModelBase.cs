@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eBar.WaiterApp.ViewModels
+namespace eBar.WaiterApp.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

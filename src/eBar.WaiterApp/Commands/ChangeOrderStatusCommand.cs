@@ -1,9 +1,9 @@
-﻿using eBar.WaiterApp.Models;
-using eBar.WaiterApp.Storages;
+﻿using eBar.WaiterApp.Model;
+using eBar.WaiterApp.Storage;
 
 namespace eBar.WaiterApp.Commands
 {
-    internal class ChangeOrderStatusCommand : BaseCommand
+    public class ChangeOrderStatusCommand : BaseCommand
     {
         public bool CanExecute(object parameter) => parameter is Order;
         public override void Execute(object parameter)

@@ -1,4 +1,4 @@
-﻿using eBar.WaiterApp.Models;
+﻿using eBar.WaiterApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eBar.WaiterApp.Models
+namespace eBar.WaiterApp.Model
 {
-    public class Order : INotifyPropertyChanged
+    public partial class Order : INotifyPropertyChanged
     {
         private static int _generatedId = 0;
         public int Id { get; }
@@ -37,12 +37,6 @@ namespace eBar.WaiterApp.Models
             Status = OrderStatus.Open;
         }
 
-        public enum OrderStatus
-        {
-            Open,
-            Closed
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -61,7 +55,7 @@ namespace eBar.WaiterApp.Models
 
         }
 
-        internal void Delete(OrderItem orderItem)
+        public void Delete(OrderItem orderItem)
         {
             OrderItem existingItem = this.OrderItems.Where(x => x.Id == orderItem.Id).FirstOrDefault();
             if (existingItem !=null)

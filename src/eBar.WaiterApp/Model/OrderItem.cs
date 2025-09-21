@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eBar.WaiterApp.Models
+namespace eBar.WaiterApp.Model
 {
     public class OrderItem : INotifyPropertyChanged
     {

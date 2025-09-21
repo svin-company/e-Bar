@@ -1,4 +1,4 @@
-﻿using eBar.WaiterApp.Models;
+﻿using eBar.WaiterApp.Model;
 
 namespace eBar.WaiterApp.Commands
 {

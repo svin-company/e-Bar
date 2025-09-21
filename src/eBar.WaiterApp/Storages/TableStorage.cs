@@ -1,8 +1,8 @@
-﻿using eBar.WaiterApp.Models;
+﻿using eBar.WaiterApp.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace eBar.WaiterApp.Storages
+namespace eBar.WaiterApp.Storage
 {
     class TableStorage
     {
@@ -10,8 +10,9 @@ namespace eBar.WaiterApp.Storages
 
         private static ObservableCollection<Table> CreateTables()
         {
+            int tableCount = 5;
             ObservableCollection<Table> tables = new ObservableCollection<Table>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < tableCount; i++)
             {
                 tables.Add(new Table());
             }
@@ -26,14 +27,14 @@ namespace eBar.WaiterApp.Storages
         public static void UpdateOrderStatus(Order order)
         {
             var table =  tables.FirstOrDefault(t => t.Orders.Any(o => o.Id == order.Id));
-            var existtingOrder = table.Orders.FirstOrDefault(x => x.Id == order.Id);
-            if (existtingOrder.Status == Order.OrderStatus.Open)
+            var existingOrder = table.Orders.FirstOrDefault(x => x.Id == order.Id);
+            if (existingOrder.Status == Order.OrderStatus.Open)
             {
-                existtingOrder.Status = Order.OrderStatus.Closed;
+                existingOrder.Status = Order.OrderStatus.Closed;
             }
             else
             {
-                existtingOrder.Status=Order.OrderStatus.Open;
+                existingOrder.Status=Order.OrderStatus.Open;
             }
         }
 
