@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
       - name: Downloading artifacts from build
         uses: actions/download-artifact@v4
         with:
