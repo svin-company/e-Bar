@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81 d17.13
+VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9D25732E-199A-47F3-BD3F-A39AFFAA3874}"
 EndProject
@@ -44,6 +44,8 @@ Global
 		{467BCD8F-F578-4834-98EF-BA08709290CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,9 +57,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A92639DD-0F34-4546-A5BE-06B8CC9861EB}
-		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
