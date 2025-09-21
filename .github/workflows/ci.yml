@@ -39,4 +39,4 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./src/eBar.sln
       - name: Test dotnet projects
-        run: dotnet test ./src/eBar.sln --no-build --no-restore --configuration Release --verbosity normal
+        run: dotnet test ./src/eBar.sln --no-restore --configuration Release --verbosity normal
