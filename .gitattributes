@@ -1,1 +1,1 @@
-*.sln -diff
+*.sln filter=strip-vsversion
