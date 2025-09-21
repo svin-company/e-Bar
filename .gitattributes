@@ -1,1 +1,1 @@
-*.sln merge=union
+*.sln -diff
