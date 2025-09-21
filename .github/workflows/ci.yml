@@ -32,14 +32,11 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
-      - name: Downloading artifacts from build
-        uses: actions/download-artifact@v4
-        with:
-          name: core-build
-          path: ./src
       - name: Setup dotnet 9.0
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
+      - name: Restore dependencies
+        run: dotnet restore ./src/eBar.sln
       - name: Test dotnet projects
         run: dotnet test ./src/eBar.sln --no-build --no-restore --configuration Release --verbosity normal
