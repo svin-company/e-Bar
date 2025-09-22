@@ -1,6 +1,9 @@
-﻿namespace eBar.Api.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class BaseController
+namespace eBar.Api.Controllers;
+
+[ApiController]
+public class BaseController : ControllerBase
 {
     
 }

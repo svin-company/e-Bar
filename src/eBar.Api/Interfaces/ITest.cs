@@ -2,5 +2,5 @@
 
 public interface ITest
 {
-    
+    string GetData();
 }

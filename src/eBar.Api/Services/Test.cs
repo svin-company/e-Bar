@@ -1,6 +1,11 @@
-﻿namespace eBar.Api.Services;
+﻿using eBar.Api.Interfaces;
 
-public class Test
+namespace eBar.Api.Services;
+
+public class Test : ITest
 {
-    
+    public string GetData()
+    {
+        return "Test data";
+    }
 }
