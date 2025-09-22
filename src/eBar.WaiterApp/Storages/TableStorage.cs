@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace eBar.WaiterApp.Storage
+namespace eBar.WaiterApp.Storages
 {
     class TableStorage
     {
@@ -28,17 +28,17 @@ namespace eBar.WaiterApp.Storage
         {
             var table =  tables.FirstOrDefault(t => t.Orders.Any(o => o.Id == order.Id));
             var existingOrder = table.Orders.FirstOrDefault(x => x.Id == order.Id);
-            if (existingOrder.Status == Order.OrderStatus.Open)
+            if (existingOrder.Status == OrderStatus.Open)
             {
-                existingOrder.Status = Order.OrderStatus.Closed;
+                existingOrder.Status = OrderStatus.Closed;
             }
             else
             {
-                existingOrder.Status=Order.OrderStatus.Open;
+                existingOrder.Status=OrderStatus.Open;
             }
         }
 
-        internal static bool SaveOrder(Table table, Order order)
+        public static bool SaveOrder(Table table, Order order)
         {
             if (order.OrderItems.Count == 0)
             {
@@ -60,7 +60,7 @@ namespace eBar.WaiterApp.Storage
 
         private static bool HasOpenOrder(Table table)
         {
-            return  table.Orders.Any(x => x.Status == Order.OrderStatus.Open);
+            return  table.Orders.Any(x => x.Status == OrderStatus.Open);
 
         }
     }

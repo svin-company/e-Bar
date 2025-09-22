@@ -1,4 +1,4 @@
-﻿using eBar.WaiterApp.Storage;
+﻿using eBar.WaiterApp.Storages;
 using eBar.WaiterApp.ViewModel;
 using System.Windows;
 

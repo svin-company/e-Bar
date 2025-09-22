@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eBar.WaiterApp.Storage
+namespace eBar.WaiterApp.Storages
 {
     public static class FoodStorage
     {

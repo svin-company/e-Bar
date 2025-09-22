@@ -1,6 +1,6 @@
 ﻿using eBar.WaiterApp.Commands;
 using eBar.WaiterApp.Model;
-using eBar.WaiterApp.Storage;
+using eBar.WaiterApp.Storages;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 

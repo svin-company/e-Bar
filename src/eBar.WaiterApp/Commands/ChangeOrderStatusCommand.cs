@@ -1,5 +1,5 @@
 ﻿using eBar.WaiterApp.Model;
-using eBar.WaiterApp.Storage;
+using eBar.WaiterApp.Storages;
 
 namespace eBar.WaiterApp.Commands
 {
