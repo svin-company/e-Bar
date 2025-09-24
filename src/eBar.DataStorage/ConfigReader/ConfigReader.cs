@@ -9,10 +9,12 @@ namespace eBar.DataStorage.ConfigReader
             string connectionKey = "DbConnection";
             var config = new ConfigurationBuilder()
            .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
            .Build();
 
-            return config.GetConnectionString(connectionKey);
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+                ?? config.GetConnectionString(connectionKey);
+            return connectionString;
         }
     }
 }
