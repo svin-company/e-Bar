@@ -16,17 +16,19 @@ namespace eBar.DataStorage.Providers.SqlConnectionProvider
             _entityAttributeProvider = entityAttributeProvider;
         }
 
-        public async Task<bool> AddAsync(T entity)
+        public async Task<int> AddAsync(T entity)
         {
             await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
             {
                 var tableName = _entityAttributeProvider.GetTableName<T>();
                 var columnPropertyNames = _entityAttributeProvider.GetColumnAndModelPropertyNames<T>(addKey: false);
-                var query = $"INSERT INTO {tableName} ({string.Join(", ", columnPropertyNames.Keys)}) " +
-                    $"VALUES ({string.Join(", ", columnPropertyNames.Values.Select(propName => $"@{propName}"))})";
+                var query = $@"
+                    INSERT INTO {tableName} ({string.Join(", ", columnPropertyNames.Keys)})
+                    VALUES ({string.Join(", ", columnPropertyNames.Values.Select(propName => $"@{propName}"))})
+                    RETURNING id;";
 
-                int affectedRows = await connection.ExecuteAsync(query, entity);
-                return affectedRows > 0;
+                int id = await connection.QuerySingleAsync<int>(query, entity);
+                return id;
             }
         }
 

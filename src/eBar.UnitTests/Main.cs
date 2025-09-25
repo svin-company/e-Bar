@@ -35,91 +35,74 @@ public class Tests
     public async Task Insert_Entity_Test()
     {
         //Arrange: Создаем запись для добавления в таблицу
-        var insertedProduct = new Product("thirdTest", 111, "imagePathTest", "test", 1, 1);
+        var testProduct = new Product("test", 111, "imagePathTest", "test", 1, 1);
 
         //Act: Делаем запись в БД
         var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
-        bool result = await sqlConnection.AddAsync(insertedProduct);
+        var  productId = await sqlConnection.AddAsync(testProduct);
 
-        //Assert: Проверяем, что запись появилась в БД
-        using var connection = new NpgsqlConnection(new ConfigReader().GetConnectionString());
-        await connection.OpenAsync();
-        var testProduct = connection.QueryAsync<Product>
-           ($@"SELECT name AS Name, price AS Price, image_path AS ImagePath, 
-                    description AS Description, product_category_id as ProductCategoryId, 
-                    restaurant_id AS RestaurantId FROM product as Product 
-                    WHERE name = @Name", new { insertedProduct.Name }).Result.FirstOrDefault();
+        //Assert: Проверяем, что запись появилась в БД и удаляем ее
+        var insertedProduct = await GetRecord(productId);
 
-        AssertProductMatch(insertedProduct, testProduct); 
+        AssertProductMatch(insertedProduct, testProduct);
+        DeleteRecord(productId);
     }
 
     [Test]
     public async Task Update_Entity_Test()
     {
-        //Arrange: Находим запись, которую хотим изменить
-        int productId = 81;
-        var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
-        var updatedProduct = await sqlConnection.GetByIdAsync(productId);
-        updatedProduct.Name = "new name";
+        //Arrange: Создаем запись, которую будем менять и получаем его id
+        // Проверяем, что продукт создался
+        var testProduct = new Product("test", 111, "imagePathTest", "test", 1, 1);
+        int productId = await CreateRecord(testProduct);
+        var productToUpdate = await GetRecord(productId);
 
         //Act: Вносим изменения в БД
-        bool result = await sqlConnection.UpdateAsync(updatedProduct);
+        testProduct.Name = productToUpdate.Name = "new name";
+        var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
+        bool result = await sqlConnection.UpdateAsync(productToUpdate);
 
-        //Assert: Проверяем, что строка в БД изменилась
-        using var connection = new NpgsqlConnection(new ConfigReader().GetConnectionString());
-        await connection.OpenAsync();
-        var testProduct = connection.QueryAsync<Product>
-           ($@"SELECT name AS Name, price AS Price, image_path AS ImagePath, 
-                    description AS Description, product_category_id as ProductCategoryId, 
-                    restaurant_id AS RestaurantId FROM product as Product 
-                    WHERE id = @Id", new { Id = productId }).Result.FirstOrDefault();
-
-        AssertProductMatch(updatedProduct, testProduct);
+        //Assert: Проверяем, что изменения произошли
+        AssertProductMatch(productToUpdate, testProduct);
+        DeleteRecord(productId);
     }
 
     [Test]
     public async Task Select_Entity_Test()
     {
-        //Arrange: Выбираем id продукта, который хотим найти
-        int productId = 81;
+        //Arrange: Создаем продукт и получаем его id
+        var testProduct = new Product("test", 111, "imagePathTest", "test", 1, 1);
+        int productId = await CreateRecord(testProduct);
 
         //Act: Извлекаем данные из БД
         var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
         var selectedProduct = await sqlConnection.GetByIdAsync(productId);
 
-        //Assert: Проверяем, что данные извлекаются корректно и в полном объеме
-        using var connection = new NpgsqlConnection(new ConfigReader().GetConnectionString());
-        await connection.OpenAsync();
-        var testProduct = connection.QueryAsync<Product>
-            ($@"SELECT name AS Name, price AS Price, image_path AS ImagePath, 
-                    description AS Description, product_category_id as ProductCategoryId, 
-                    restaurant_id AS RestaurantId FROM product as Product 
-                    WHERE id = @Id", new { Id = productId }).Result.FirstOrDefault();
-
+        //Assert: Проверяем, что данные извлекаются корректно и в полном объеме, затем удаляем запись
         AssertProductMatch(selectedProduct, testProduct);
+        DeleteRecord(productId);
     }
 
     [Test]
     public async Task Delete_Entity_Test()
     {
-        //Arrange: Выбираем id продукта, который хотим удалить
-        int productId = 2;
+        //Arrange: Создаем продукт, который хотим удалить и находим его id
+        var testProduct = new Product("test", 111, "imagePathTest", "test", 1, 1);
+        int productId = await CreateRecord(testProduct);
 
         //Act: Удаляем запись из БД
         var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
         await sqlConnection.DeleteAsync(productId);
 
         //Assert: Проверяем, что запись действительно удалена
-        using var connection = new NpgsqlConnection(new ConfigReader().GetConnectionString());
-        var deleted = await connection.QueryFirstOrDefaultAsync<int?>(
-            "SELECT id AS Id FROM product AS Product WHERE id = @Id", new { Id = productId });
+        var deleted = await sqlConnection.GetByIdAsync(productId);
 
         Assert.That(deleted, Is.Null);
     }
 
     private static void AssertProductMatch(Product basicProduct, Product testProduct)
     {
-        Assert.That(testProduct, Is.Not.Null);
+        Assert.That(basicProduct, Is.Not.Null);
         Assert.Multiple(() =>
         {
             Assert.That(basicProduct.Name, Is.EqualTo(testProduct.Name));
@@ -129,5 +112,26 @@ public class Tests
             Assert.That(basicProduct.ProductCategoryId, Is.EqualTo(testProduct.ProductCategoryId));
             Assert.That(basicProduct.ImagePath, Is.EqualTo(testProduct.ImagePath));
         });
+    }
+
+    private static async Task<int> CreateRecord(Product product)
+    {
+        var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
+        int id = await sqlConnection.AddAsync(product);
+        return id;
+    }
+
+    private static async Task<bool> DeleteRecord(int id)
+    {
+        var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
+        var result = await sqlConnection.DeleteAsync(id);
+        return result;
+    }
+
+    private static async Task<Product> GetRecord(int id)
+    {
+        var sqlConnection = new SqlConnectionProvider<Product>(new ConfigReader(), new EntityAttributeProvider());
+        var product = await sqlConnection.GetByIdAsync(id);
+        return product;
     }
 }
