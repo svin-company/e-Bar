@@ -56,3 +56,4 @@ nunit-*.xml
 .idea
 .vs
 .env
+appsettings.json

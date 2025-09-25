@@ -39,4 +39,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./src/eBar.sln
       - name: Test dotnet projects
+        env:
+            DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: dotnet test ./src/eBar.sln --no-restore --configuration Release --verbosity normal
