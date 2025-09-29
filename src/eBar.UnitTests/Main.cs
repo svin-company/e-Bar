@@ -1,10 +1,8 @@
-﻿using Dapper;
-using eBar.Core.Kitchen;
+﻿using eBar.Core.Kitchen;
 using eBar.DataStorage.ConfigReader;
 using eBar.DataStorage.Providers.EntityAttributeProvider;
 using eBar.DataStorage.Providers.SqlConnectionProvider;
 using eBar.DataStorage.TestModel;
-using Npgsql;
 
 namespace eBar.UnitTests;
 

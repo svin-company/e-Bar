@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using eBar.DataStorage.Exceptions;
 
 
 namespace eBar.DataStorage.Providers.EntityAttributeProvider
@@ -16,7 +17,7 @@ namespace eBar.DataStorage.Providers.EntityAttributeProvider
                 return tableAttribute.Name;
             }
 
-            throw new Exception($"У класса {typeof(T)} отсутствует атрибут с названием таблицы");
+            throw new ClassEmptyColumnAttributeException($"У класса {typeof(T)} отсутствует атрибут с названием таблицы");
         }
 
         public Dictionary<string, string> GetColumnAndModelPropertyNames<T>(bool addKey = true)
@@ -39,7 +40,7 @@ namespace eBar.DataStorage.Providers.EntityAttributeProvider
                 }
                 else
                 {
-                    throw new($"У свойства {propertyInfo.Name} отсутствует соответствующий атритбут");
+                    throw new PropertyEmptyAttributeException($"У свойства {propertyInfo.Name} отсутствует соответствующий атритбут");
                 }
             }
             return columnNameProperyName;
@@ -56,7 +57,7 @@ namespace eBar.DataStorage.Providers.EntityAttributeProvider
                 }
             }
 
-            throw new Exception($"У класса {typeof(T)} отсутствует атрибут ключа");
+            throw new ClassEmptyKeyAttributeException($"У класса {typeof(T)} отсутствует атрибут ключа");
         }
 
         public string GetFormattedColumnAndModelPropertyNames<T>(Dictionary<string, string> columnPropertyNames, string format)
