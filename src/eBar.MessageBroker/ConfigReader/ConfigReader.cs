@@ -8,10 +8,11 @@ namespace eBar.MessageBroker.ConfigReader.ConfigReader
         {
             string connectionKey = "MessageBrokerConnection";
             var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
-            return config.GetSection(connectionKey);
+            var section =  config.GetSection(connectionKey);
+            return section;
         }
     }
 }
