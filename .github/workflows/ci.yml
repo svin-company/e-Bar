@@ -38,7 +38,7 @@ jobs:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
         run: dotnet restore ./src/eBar.sln
+      - name: Create appsettings.json
+        run: echo '${{ secrets.APPSETTINGS_JSON }}' > src/eBar.UnitTests/appsettings.json
       - name: Test dotnet projects
-        env:
-            DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: dotnet test ./src/eBar.sln --no-restore --configuration Release --verbosity normal

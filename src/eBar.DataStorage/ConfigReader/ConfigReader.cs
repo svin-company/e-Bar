@@ -12,8 +12,7 @@ namespace eBar.DataStorage.ConfigReader
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-                ?? config.GetConnectionString(connectionKey);
+            var connectionString = config.GetConnectionString(connectionKey);
             return connectionString;
         }
     }
