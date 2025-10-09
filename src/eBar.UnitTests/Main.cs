@@ -43,7 +43,7 @@ public class Tests
         var insertedProduct = await GetRecord(productId);
 
         AssertProductMatch(insertedProduct, testProduct);
-        DeleteRecord(productId);
+        await DeleteRecord(productId);
     }
 
     [Test]
@@ -78,7 +78,7 @@ public class Tests
 
         //Assert: Проверяем, что данные извлекаются корректно и в полном объеме, затем удаляем запись
         AssertProductMatch(selectedProduct, testProduct);
-        DeleteRecord(productId);
+        await DeleteRecord(productId);
     }
 
     [Test]

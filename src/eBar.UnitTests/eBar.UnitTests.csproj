@@ -18,6 +18,12 @@
     <ItemGroup>
         <Using Include="NUnit.Framework" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\eBar.Core\eBar.Core.csproj" />
