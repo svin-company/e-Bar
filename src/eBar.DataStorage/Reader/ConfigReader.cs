@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace eBar.DataStorage.ConfigReader
+namespace eBar.DataStorage.Reader
 {
     public class ConfigReader: IConfigReader
     {
