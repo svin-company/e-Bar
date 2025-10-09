@@ -18,8 +18,10 @@ jobs:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
         run: dotnet restore ./src/eBar.sln
+      - name: Disable GitHub warning matching
+        run: echo "::remove-matcher owner=csc::"
       - name: Build applications
-        run: dotnet build ./src/eBar.sln --no-restore --configuration Release
+        run: dotnet build ./src/eBar.sln --no-restore --configuration Release 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -38,7 +40,9 @@ jobs:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
         run: dotnet restore ./src/eBar.sln
+      - name: Disable GitHub warning matching
+        run: echo "::remove-matcher owner=csc::"
+      - name: Create appsettings.json
+        run: echo '${{ secrets.APPSETTINGS_JSON }}' > src/eBar.UnitTests/appsettings.json
       - name: Test dotnet projects
-        env:
-            DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: dotnet test ./src/eBar.sln --no-restore --configuration Release --verbosity normal
