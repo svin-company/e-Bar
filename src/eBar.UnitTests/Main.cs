@@ -3,7 +3,6 @@ using RMQ = eBar.MessageBroker.ConfigReader.ConfigReader;
 using eBar.MessageBroker.MessageConsumer;
 using eBar.MessageBroker.MessageProducer;
 using DB = eBar.DataStorage.Reader;
-using eBar.DataStorage.ConfigReader;
 using eBar.DataStorage.Providers.EntityAttributeProvider;
 using eBar.DataStorage.Providers.SqlConnectionProvider;
 using eBar.DataStorage.TestModel;
