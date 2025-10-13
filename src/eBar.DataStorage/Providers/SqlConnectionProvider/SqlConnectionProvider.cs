@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using eBar.DataStorage.ConfigReader;
+using eBar.DataStorage.Reader;
 using eBar.DataStorage.Providers.EntityAttributeProvider;
 using Npgsql;
 

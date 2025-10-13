@@ -28,6 +28,7 @@
     <ItemGroup>
       <ProjectReference Include="..\eBar.Core\eBar.Core.csproj" />
       <ProjectReference Include="..\eBar.DataStorage\eBar.DataStorage.csproj" />
+      <ProjectReference Include="..\eBar.MessageBroker\eBar.MessageBroker.csproj" />
     </ItemGroup>
 
 </Project>
