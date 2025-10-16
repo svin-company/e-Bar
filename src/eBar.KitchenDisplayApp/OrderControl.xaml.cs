@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace eBar.KitchenDisplay
+namespace eBar.KitchenDisplayApp
 {
     public partial class OrderControl : UserControl
     {
@@ -36,7 +36,7 @@ namespace eBar.KitchenDisplay
         }
 
         private int orderCounter = 1;
-        private readonly List<OrderEntry> activeOrders = new();
+        private readonly List<OrderEntry> activeOrders = new List<OrderEntry>();
 
         public OrderControl()
         {
@@ -49,14 +49,14 @@ namespace eBar.KitchenDisplay
 
             string orderNumber = orderCounter.ToString("D3");
 
-            var orderCheckbox = new CheckBox { VerticalAlignment = VerticalAlignment.Center};
-            var leftContainer = new StackPanel { Orientation = Orientation.Horizontal};
+            var orderCheckbox = new CheckBox { VerticalAlignment = VerticalAlignment.Center };
+            var leftContainer = new StackPanel { Orientation = Orientation.Horizontal };
             leftContainer.Children.Add(orderCheckbox);
             leftContainer.Children.Add(new TextBlock { Text = $"Заказ с номером №{orderNumber} создан" });
             LeftTarget.Children.Add(leftContainer);
 
-            var timerText = new TextBlock { Text = "30:00"};
-            var rightPanel = new StackPanel { Orientation = Orientation.Horizontal};
+            var timerText = new TextBlock { Text = "30:00" };
+            var rightPanel = new StackPanel { Orientation = Orientation.Horizontal };
             rightPanel.Children.Add(timerText);
             RightTarget.Children.Add(rightPanel);
 
@@ -93,7 +93,8 @@ namespace eBar.KitchenDisplay
 
             if (toRemove.Count == 0)
             {
-                MessageBox.Show("Выберите заказы для удаления.", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Выберите заказы для удаления.", "Удаление", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -105,8 +106,8 @@ namespace eBar.KitchenDisplay
                 }
                 catch
                 {
-                    
                 }
+
                 LeftTarget?.Children.Remove(entry.LeftElement);
                 RightTarget?.Children.Remove(entry.RightElement);
                 activeOrders.Remove(entry);
