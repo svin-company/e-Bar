@@ -28,7 +28,7 @@ jobs:
       - name: Build applications
         run: |
           dotnet build ./src/eBar.Core/eBar.Core.csproj --no-restore --configuration Release
-          dotnet build ./src/eBar.Storage/eBar.DataStorage.csproj --no-restore --configuration Release
+          dotnet build ./src/eBar.DataStorage/eBar.DataStorage.csproj --no-restore --configuration Release
           dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj --no-restore --configuration Release
           dotnet build ./src/eBar.Api/eBar.Api.csproj --no-restore --configuration Release
           dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj --no-restore --configuration Release
