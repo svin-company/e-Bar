@@ -22,11 +22,11 @@ jobs:
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
         run: |
-        dotnet build ./src/eBar.Core/eBar.Core.csproj --no-restore --configuration Release
-        dotnet build ./src/eBar.Storage/eBar.DataStorage.csproj --no-restore --configuration Release
-        dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj --no-restore --configuration Release
-        dotnet build ./src/eBar.Api/eBar.Api.csproj --no-restore --configuration Release
-        dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj --no-restore --configuration Release
+          dotnet build ./src/eBar.Core/eBar.Core.csproj --no-restore --configuration Release
+          dotnet build ./src/eBar.Storage/eBar.DataStorage.csproj --no-restore --configuration Release
+          dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj --no-restore --configuration Release
+          dotnet build ./src/eBar.Api/eBar.Api.csproj --no-restore --configuration Release
+          dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj --no-restore --configuration Release
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
-      - name: Setup dotnet framework 4.8
+      - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
@@ -54,8 +54,12 @@ jobs:
     runs-on: windows-latest
     needs: build_core
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v3
+#      - name: Checkout branch
+#        uses: actions/checkout@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: core-build
       - name: Setup dotnet 9.0
         uses: actions/setup-dotnet@v3
         with:
