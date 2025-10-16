@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           while IFS= read -r proj; do
-            echo "Building $proj ..."
+            echo "Restoring $proj ..."
             dotnet restore "$proj"
           done < ./build/core.txt
       - name: Disable GitHub warning matching
@@ -64,10 +64,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_core
     steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: core-build
+      - name: Checkout branch
+        uses: actions/checkout@v3
       - name: Setup dotnet 9.0
         uses: actions/setup-dotnet@v3
         with:
@@ -76,7 +74,7 @@ jobs:
         shell: bash
         run: |
           while IFS= read -r proj; do
-            echo "Building $proj ..."
+            echo "Restoring $proj ..."
             dotnet restore "$proj"
           done < ./build/core.txt
       - name: Disable GitHub warning matching
@@ -87,6 +85,6 @@ jobs:
         shell: bash
         run: |
           while IFS= read -r proj; do
-            echo "Building $proj ..."
+            echo "Testing $proj ..."
             dotnet test "$proj" --no-restore --configuration Release --verbosity normal
           done < ./build/tests.txt
