@@ -1,4 +1,6 @@
-﻿namespace eBar.MessageBroker.MessageProducer
+﻿using System.Threading.Tasks;
+
+namespace eBar.MessageBroker.MessageProducer
 {
     public interface IMessageProducer
     {

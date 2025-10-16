@@ -1,4 +1,6 @@
-﻿namespace eBar.MessageBroker.MessageConsumer
+﻿using System.Threading.Tasks;
+
+namespace eBar.MessageBroker.MessageConsumer
 {
     public interface IMessageConsumer
     {

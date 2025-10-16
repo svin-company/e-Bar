@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace eBar.MessageBroker.MessageProducer
 {

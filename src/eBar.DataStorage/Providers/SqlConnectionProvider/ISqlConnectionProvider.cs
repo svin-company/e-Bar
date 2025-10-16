@@ -1,4 +1,6 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace eBar.DataStorage.Providers.SqlConnectionProvider
 {
     public interface ISqlConnectionProvider<T>

@@ -1,6 +1,7 @@
-﻿namespace eBar.Core.Kitchen;
-
-public class OrderPosition
+﻿namespace eBar.Core.Kitchen
 {
-    public string Name {get; set;}
+    public class OrderPosition
+    {
+        public string Name { get; set; }
+    }
 }

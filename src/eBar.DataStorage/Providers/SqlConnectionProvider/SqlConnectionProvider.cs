@@ -1,4 +1,7 @@
-﻿using Dapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Dapper;
 using eBar.DataStorage.Reader;
 using eBar.DataStorage.Providers.EntityAttributeProvider;
 using Npgsql;
