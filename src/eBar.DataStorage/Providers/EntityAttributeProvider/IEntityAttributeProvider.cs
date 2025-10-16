@@ -1,4 +1,6 @@
-﻿namespace eBar.DataStorage.Providers.EntityAttributeProvider
+﻿using System.Collections.Generic;
+
+namespace eBar.DataStorage.Providers.EntityAttributeProvider
 {
     public interface IEntityAttributeProvider
     {
