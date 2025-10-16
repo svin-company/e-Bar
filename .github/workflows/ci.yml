@@ -17,7 +17,12 @@ jobs:
         with:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
-        run: dotnet restore ./src/eBar.sln
+        run: |
+          dotnet restore ./src/eBar.Core/eBar.Core.csproj
+          dotnet build ./src/eBar.Storage/eBar.DataStorage.csproj
+          dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj
+          dotnet build ./src/eBar.Api/eBar.Api.csproj
+          dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
