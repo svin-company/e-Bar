@@ -17,21 +17,21 @@ jobs:
         with:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
+        shell: bash
         run: |
-          dotnet restore ./src/eBar.Core/eBar.Core.csproj
-          dotnet build ./src/eBar.DataStorage/eBar.DataStorage.csproj
-          dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj
-          dotnet build ./src/eBar.Api/eBar.Api.csproj
-          dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj
+          while IFS= read -r proj; do
+            echo "Building $proj ..."
+            dotnet restore "$proj"
+          done < core.txt
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
+        shell: bash
         run: |
-          dotnet build ./src/eBar.Core/eBar.Core.csproj --no-restore --configuration Release
-          dotnet build ./src/eBar.DataStorage/eBar.DataStorage.csproj --no-restore --configuration Release
-          dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj --no-restore --configuration Release
-          dotnet build ./src/eBar.Api/eBar.Api.csproj --no-restore --configuration Release
-          dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj --no-restore --configuration Release
+          while IFS= read -r proj; do
+            echo "Building $proj ..."
+            dotnet build "$proj" --no-restore --configuration Release
+          done < core.txt
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -52,15 +52,18 @@ jobs:
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
-        #run:
-        run: echo "No windows apps sets. Skipped"
+        shell: pwsh
+        run: |
+          $projects = Get-Content ./build/framework.txt
+          foreach ($proj in $projects) {
+            Write-Host "Building $proj ..."
+            msbuild $proj /p:Configuration=Release /p:TargetFrameworkVersion=v4.8 /m
+          }
 
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build_core
     steps:
-#      - name: Checkout branch
-#        uses: actions/checkout@v3
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -70,10 +73,20 @@ jobs:
         with:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
-        run: dotnet restore ./src/eBar.sln
+        shell: bash
+        run: |
+          while IFS= read -r proj; do
+            echo "Building $proj ..."
+            dotnet restore "$proj"
+          done < core.txt
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Create appsettings.json
         run: echo '${{ secrets.APPSETTINGS_JSON }}' > src/eBar.UnitTests/appsettings.json
       - name: Test dotnet projects
-        run: dotnet test ./src/eBar.sln --no-restore --configuration Release --verbosity normal
+        shell: bash
+        run: |
+          while IFS= read -r proj; do
+            echo "Building $proj ..."
+            dotnet test "$proj" --no-restore --configuration Release --verbosity normal
+          done < tests.txt
