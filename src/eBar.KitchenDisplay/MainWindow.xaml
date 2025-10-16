@@ -4,65 +4,63 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:eBar.KitchenDisplay"
+        xmlns:controls="clr-namespace:eBar.KitchenDisplay"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow"
+        MinHeight="450"
+        MinWidth="800"
+        Background="#202020"
         WindowStartupLocation="CenterOwner">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
 
-    <Border CornerRadius="10" BorderThickness="1">
-        <Grid>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-                <RowDefinition Height="48*"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="152"/>
-                <ColumnDefinition Width="179*"/>
-                <ColumnDefinition Width="46*"/>
-                <ColumnDefinition Width="23*"/>
-                <ColumnDefinition Width="152"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock 
-            Text="Order Display"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"
-             FontSize="28"
-             FontWeight="Bold"
-             TextAlignment="Center"
-             Grid.ColumnSpan="5" />
-
-            <CheckBox
-            Content="Order Complete"
-            FontSize="14"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Grid.Row="1"/>
-
-            <TextBlock
-            FontWeight="Medium"
-            Text="Time left: 69:69"
-            FontSize="14"
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            TextAlignment="Center"
-            Grid.Column="4"/>
-
-            <Button
-                Content="Complete"
-                Grid.Column="1"
-                Grid.Row="8"
-                Grid.ColumnSpan="2"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0" />
+            <ColumnDefinition Width="200*" />
+            <ColumnDefinition Width="400*" />
+            <ColumnDefinition Width="40*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="1" Background="#404040">
+            <StackPanel
+                VerticalAlignment="Top"
+                x:Name="LeftStackPanel"
+                Grid.Row="0"
+                Orientation="Vertical"
+                HorizontalAlignment="Left" />
         </Grid>
-    </Border>
+
+        <Grid Grid.Row="0" Grid.Column="2">
+            <StackPanel Margin=" 5 0 0 0">
+                <TextBlock Text="123" />
+                <TextBlock Text="123" />
+                <TextBlock Text="123" />
+                <TextBlock Text="123" />
+                <TextBlock Text="123" />
+                <TextBlock Text="123" />
+                <TextBlock Text="123" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.Column="3" Background="#404040">
+            <StackPanel
+                VerticalAlignment="Top"
+                x:Name="RightStackPanel"
+                Grid.Row="0"
+                Orientation="Vertical"
+                HorizontalAlignment="Center"/>
+        </Grid>
+
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" Background="#303030">
+        </Grid>
+        <controls:OrderControl Grid.Row="1" Grid.Column="3"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               LeftTarget="{Binding ElementName=LeftStackPanel}"
+                               RightTarget="{Binding ElementName=RightStackPanel}" />
+    </Grid>
 </Window>

@@ -16,13 +16,4 @@ namespace eBar.KitchenDisplay;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
-    {
-        InitializeComponent();
-    }
-
-    private void CheckBox_Checked(object sender, RoutedEventArgs e)
-    {
-
-    }
 }
