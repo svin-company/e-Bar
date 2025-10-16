@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.Api", "eBar.Api\eBar.Api.csproj", "{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.WaiterApp", "eBar.WaiterApp\eBar.WaiterApp.csproj", "{467BCD8F-F578-4834-98EF-BA08709290CE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.Core", "eBar.Core\eBar.Core.csproj", "{16EF8798-A523-47D0-96FC-5BB669EAAC62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.MessageBroker", "eBar.MessageBroker\eBar.MessageBroker.csproj", "{DF49DEF1-BA21-4A85-AEA5-3BB55AD6A2A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.DataStorage", "eBar.DataStorage\eBar.DataStorage.csproj", "{86698383-AE40-40A1-AC1D-9C02879D0093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.WaiterAppFW", "ebar.WaiterAppFW\eBar.WaiterAppFW.csproj", "{1CE6ACA0-DEC2-4542-A73C-CEC6236B3F7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F80F22FB-8C60-4E0A-87B4-6A5EDAB3E03D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{467BCD8F-F578-4834-98EF-BA08709290CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{467BCD8F-F578-4834-98EF-BA08709290CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{467BCD8F-F578-4834-98EF-BA08709290CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{467BCD8F-F578-4834-98EF-BA08709290CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +49,10 @@ Global
 		{86698383-AE40-40A1-AC1D-9C02879D0093}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86698383-AE40-40A1-AC1D-9C02879D0093}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86698383-AE40-40A1-AC1D-9C02879D0093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE6ACA0-DEC2-4542-A73C-CEC6236B3F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE6ACA0-DEC2-4542-A73C-CEC6236B3F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE6ACA0-DEC2-4542-A73C-CEC6236B3F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE6ACA0-DEC2-4542-A73C-CEC6236B3F7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +64,7 @@ Global
 		{DF49DEF1-BA21-4A85-AEA5-3BB55AD6A2A3} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
 		{86698383-AE40-40A1-AC1D-9C02879D0093} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
+		{1CE6ACA0-DEC2-4542-A73C-CEC6236B3F7B} = {6B6EEE38-107F-423D-A45F-B074DFFD40C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A92639DD-0F34-4546-A5BE-06B8CC9861EB}

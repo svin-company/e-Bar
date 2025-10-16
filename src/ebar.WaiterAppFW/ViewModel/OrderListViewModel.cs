@@ -1,11 +1,11 @@
-﻿using eBar.WaiterApp.Commands;
-using eBar.WaiterApp.Model;
-using eBar.WaiterApp.Storages;
+﻿using eBar.WaiterAppFW.Commands;
+using eBar.WaiterAppFW.Model;
+using eBar.WaiterAppFW.Storages;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 
-namespace eBar.WaiterApp.ViewModel
+namespace eBar.WaiterAppFW.ViewModel
 {
     public class OrderListViewModel : ViewModelBase
     {

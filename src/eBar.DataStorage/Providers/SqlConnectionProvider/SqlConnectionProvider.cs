@@ -3,95 +3,48 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using eBar.DataStorage.Reader;
-using eBar.DataStorage.Providers.EntityAttributeProvider;
 using Npgsql;
 
 namespace eBar.DataStorage.Providers.SqlConnectionProvider
 {
-    public class SqlConnectionProvider<T> : ISqlConnectionProvider<T> where T : class
+    public class SqlConnectionProvider: ISqlConnectionProvider
     {
         private readonly IConfigReader _configReader;
-        private readonly IEntityAttributeProvider _entityAttributeProvider;
 
-        public SqlConnectionProvider(IConfigReader configReader, IEntityAttributeProvider entityAttributeProvider)
+        public SqlConnectionProvider(IConfigReader configReader)
         {
             _configReader = configReader;
-            _entityAttributeProvider = entityAttributeProvider;
         }
 
-        public async Task<int> AddAsync(T entity)
+        public async Task<IEnumerable<T>> QueryAsync<T>(string query)
         {
             await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
             {
-                var tableName = _entityAttributeProvider.GetTableName<T>();
-                var columnPropertyNames = _entityAttributeProvider.GetColumnAndModelPropertyNames<T>(addKey: false);
-                var query = $@"
-                    INSERT INTO {tableName} ({string.Join(", ", columnPropertyNames.Keys)})
-                    VALUES ({string.Join(", ", columnPropertyNames.Values.Select(propName => $"@{propName}"))})
-                    RETURNING id;";
-
-                int id = await connection.QuerySingleAsync<int>(query, entity);
-                return id;
-            }
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
-            {
-                var tableName = _entityAttributeProvider.GetTableName<T>();
-                (string keyColumnName, string keyPropertyName) = _entityAttributeProvider.GetKeyColumnAndPropertyName<T>();
-                var query = $"DELETE FROM {tableName} WHERE {keyColumnName} = @{keyPropertyName}";
-                var parameters = new DynamicParameters();
-                parameters.Add($"{keyColumnName}", id);
-
-                return await connection.ExecuteAsync(query, parameters) > 0;
-            }
-        }
-
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
-            {
-                var tableName = _entityAttributeProvider.GetTableName<T>();
-                var columnPropertyNames = _entityAttributeProvider.GetColumnAndModelPropertyNames<T>();
-                string formatedNames = _entityAttributeProvider.
-                    GetFormattedColumnAndModelPropertyNames<T>(columnPropertyNames, "{0} AS {1}");
-
-                var query = $"SELECT {formatedNames} FROM {tableName}";
                 return await connection.QueryAsync<T>(query);
             }
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T> ExecuteScalarAsync<T>(string query, object parameters)
         {
             await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
             {
-                var tableName = _entityAttributeProvider.GetTableName<T>();
-                var columnPropertyNames = _entityAttributeProvider.GetColumnAndModelPropertyNames<T>();
-                string formatedNames = _entityAttributeProvider.
-                    GetFormattedColumnAndModelPropertyNames<T>(columnPropertyNames, "{0} AS {1}");
-                (string keyColumnName, string keyPropertyName) = _entityAttributeProvider.GetKeyColumnAndPropertyName<T>();
-
-                var query = $"SELECT {formatedNames} FROM {tableName} WHERE {keyColumnName} = @{keyPropertyName}";
-                var parameters = new DynamicParameters();
-                parameters.Add($"{keyColumnName}", id);
-
-                return await connection.QueryFirstOrDefaultAsync<T>(query, parameters);
+                return await connection.ExecuteScalarAsync<T>(query, parameters);
             }
         }
 
-        public async Task<bool> UpdateAsync(T entity)
+        public async Task ExecuteAsync<T>(string query, T entity)
         {
             await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
             {
-                var tableName = _entityAttributeProvider.GetTableName<T>();
-                var columnPropertyNames = _entityAttributeProvider.GetColumnAndModelPropertyNames<T>(addKey: false);
-                (string keyColumnName, string keyPropertyName) = _entityAttributeProvider.GetKeyColumnAndPropertyName<T>();
-                string columnsAndProperties = _entityAttributeProvider.GetFormattedColumnAndModelPropertyNames<T>(columnPropertyNames, "{0} = @{1}");
+                await connection.ExecuteAsync(query, entity);
+            }
+        }
 
-                var query = $"UPDATE {tableName} SET {columnsAndProperties} WHERE {keyColumnName} = @{keyPropertyName}";
-                return await connection.ExecuteAsync(query, entity) > 0;
+        public async Task<T> QuerySingleOrDefaultAsync<T>(string query, object parameter)
+        {
+            await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
+            {
+                return await connection.QuerySingleOrDefaultAsync<T>(query, parameter);
             }
         }
     }
