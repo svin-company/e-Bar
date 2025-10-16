@@ -1,1 +1,1 @@
-﻿./src/eBar.UnitTests/eBar.UnitTests.csproj
+./src/eBar.UnitTests/eBar.UnitTests.csproj

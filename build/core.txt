@@ -1,4 +1,4 @@
-﻿./src/eBar.Core/eBar.Core.csproj
+./src/eBar.Core/eBar.Core.csproj
 ./src/eBar.DataStorage/eBar.DataStorage.csproj
 ./src/eBar.MessageBroker/eBar.MessageBroker.csproj
 ./src/eBar.Api/eBar.Api.csproj
