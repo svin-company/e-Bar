@@ -22,7 +22,7 @@ jobs:
           while IFS= read -r proj; do
             echo "Building $proj ..."
             dotnet restore "$proj"
-          done < core.txt
+          done < ./build/core.txt
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
@@ -31,7 +31,7 @@ jobs:
           while IFS= read -r proj; do
             echo "Building $proj ..."
             dotnet build "$proj" --no-restore --configuration Release
-          done < core.txt
+          done < ./build/core.txt
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -78,7 +78,7 @@ jobs:
           while IFS= read -r proj; do
             echo "Building $proj ..."
             dotnet restore "$proj"
-          done < core.txt
+          done < ./build/core.txt
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Create appsettings.json
@@ -89,4 +89,4 @@ jobs:
           while IFS= read -r proj; do
             echo "Building $proj ..."
             dotnet test "$proj" --no-restore --configuration Release --verbosity normal
-          done < tests.txt
+          done < ./build/tests.txt
