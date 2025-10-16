@@ -7,8 +7,8 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-    runs-on: windows-latest
+  build_core:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
@@ -21,16 +21,38 @@ jobs:
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
-        run: dotnet build ./src/eBar.sln --no-restore --configuration Release 
+        run: |
+        dotnet build ./src/eBar.Core/eBar.Core.csproj --no-restore --configuration Release
+        dotnet build ./src/eBar.Storage/eBar.DataStorage.csproj --no-restore --configuration Release
+        dotnet build ./src/eBar.MessageBroker/eBar.MessageBroker.csproj --no-restore --configuration Release
+        dotnet build ./src/eBar.Api/eBar.Api.csproj --no-restore --configuration Release
+        dotnet build ./src/eBar.UnitTests/eBar.UnitTests.csproj --no-restore --configuration Release
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: core-build
           path: src/**/bin/Release
+          
+  build_framework:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      - name: Setup dotnet framework 4.8
+        uses: microsoft/setup-msbuild@v2
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+      - name: Restore dependencies
+        run: nuget restore ./src/eBar.sln
+      - name: Disable GitHub warning matching
+        run: echo "::remove-matcher owner=csc::"
+      - name: Build applications
+        #run:
+        run: echo "No windows apps sets. Skipped"
 
   test:
     runs-on: windows-latest
-    needs: build
+    needs: build_core
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
