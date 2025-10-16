@@ -18,12 +18,11 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0" />
             <ColumnDefinition Width="200*" />
             <ColumnDefinition Width="400*" />
             <ColumnDefinition Width="40*" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="1" Background="#404040">
+        <Grid Grid.Row="0" Grid.Column="0" Background="#404040">
             <StackPanel
                 VerticalAlignment="Top"
                 x:Name="LeftStackPanel"
@@ -45,7 +44,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="3" Background="#404040">
+        <Grid Grid.Row="0" Grid.Column="2" Background="#404040">
             <StackPanel
                 VerticalAlignment="Top"
                 x:Name="RightStackPanel"
@@ -55,9 +54,9 @@
         </Grid>
 
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" Background="#303030">
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Background="#303030">
         </Grid>
-        <controls:OrderControl Grid.Row="1" Grid.Column="3"
+        <controls:OrderControl Grid.Row="1" Grid.Column="2"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
                                LeftTarget="{Binding ElementName=LeftStackPanel}"
