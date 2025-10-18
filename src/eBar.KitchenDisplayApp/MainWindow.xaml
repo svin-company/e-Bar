@@ -31,18 +31,9 @@
                 HorizontalAlignment="Left" />
         </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="2">
-            <StackPanel Margin=" 5 0 0 0">
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-                <TextBlock Text="123" />
-            </StackPanel>
-        </Grid>
+
+        <StackPanel x:Name="MiddleStackPanel" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" />
+
 
         <Grid Grid.Row="0" Grid.Column="2" Background="#404040">
             <StackPanel
@@ -50,7 +41,7 @@
                 x:Name="RightStackPanel"
                 Grid.Row="0"
                 Orientation="Vertical"
-                HorizontalAlignment="Center"/>
+                HorizontalAlignment="Center" />
         </Grid>
 
 
@@ -60,6 +51,7 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
                                LeftTarget="{Binding ElementName=LeftStackPanel}"
+                               MiddleTarget="{Binding ElementName=MiddleStackPanel}"
                                RightTarget="{Binding ElementName=RightStackPanel}" />
     </Grid>
 </Window>
