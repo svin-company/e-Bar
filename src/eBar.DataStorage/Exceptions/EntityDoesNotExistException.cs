@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace eBar.DataStorage.Exceptions
 {
     public class EntityDoesNotExistException : Exception

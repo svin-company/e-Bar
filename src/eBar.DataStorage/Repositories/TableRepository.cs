@@ -1,6 +1,8 @@
 ﻿using eBar.DataStorage.Providers.SqlConnectionProvider;
 using eBar.DataStorage.Reader;
 using eBar.Core.Model;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace eBar.DataStorage.Repositories
 {

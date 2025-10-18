@@ -2,6 +2,8 @@
 using eBar.DataStorage.Repositories.Interfaces;
 using eBar.DataStorage.Services.Interfaces;
 using eBar.Core.Model;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace eBar.DataStorage.Services
 {
@@ -26,11 +28,8 @@ namespace eBar.DataStorage.Services
 
         public async Task DeleteFood(string name)
         {
-            var existingFood = await _foodRepository.Get(name);
-            if (existingFood == null)
-            {
+            var existingFood = await _foodRepository.Get(name) ?? 
                 throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {name} не существует");
-            }
             await _foodRepository.Delete(existingFood.Id);
         }
 
@@ -47,31 +46,22 @@ namespace eBar.DataStorage.Services
         public async Task<Food> GetFood(string name)
         {
             var existingFood = await _foodRepository.Get(name);
-            if (existingFood == null)
-            {
+            return existingFood ?? 
                 throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {name} не существует");
-            }
-            return existingFood;
         }
 
         public async Task UpdateFood(string oldName, string newName)
         {
-            var existingFood = await _foodRepository.Get(oldName);
-            if (existingFood == null)
-            {
+            var existingFood = await _foodRepository.Get(oldName) ?? 
                 throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {oldName} не существует");
-            }
             var food = new Food(existingFood.Id, newName, existingFood.Price);
             await _foodRepository.Update(food);
         }
 
         public async Task UpdateFood(string name, decimal newPrice)
         {
-            var existingFood = await _foodRepository.Get(name);
-            if (existingFood == null)
-            {
+            var existingFood = await _foodRepository.Get(name) ?? 
                 throw new EntityDoesNotExistException($"Ошибка изменения: Продукта с именем {name} не существует");
-            }
             var food = new Food(existingFood.Id, existingFood.Name, newPrice);
             await _foodRepository.Update(food);
         }

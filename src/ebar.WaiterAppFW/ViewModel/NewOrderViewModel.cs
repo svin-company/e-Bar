@@ -37,9 +37,10 @@ namespace eBar.WaiterAppFW.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ConfirmCommand { get; }
 
-        public NewOrderViewModel(Order order, ITableService tableService )
+        public NewOrderViewModel(Order order, ITableService tableService, IFoodService foodService)
         {
             _tableService = tableService;
+            _foodS
             Order = order;
             Tables = _tableService.GetAll();
             Foods = FoodStorage.GetAll();

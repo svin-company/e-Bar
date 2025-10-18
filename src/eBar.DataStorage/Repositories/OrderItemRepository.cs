@@ -2,6 +2,8 @@
 using eBar.DataStorage.Reader;
 using eBar.DataStorage.Repositories.Interfaces;
 using eBar.Core.Model;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace eBar.DataStorage.Repositories
 {
@@ -59,8 +61,9 @@ namespace eBar.DataStorage.Repositories
         {
             var _sqlConnectionProvider = new SqlConnectionProvider(new ConfigReader());
             var query = @"UPDATE public.order_item
-	            SET id=?, amount=?, food_id=?, order_id=?
-	            WHERE <condition>;";
+	            SET amount=Amount
+	            WHERE id = @orderItem.Id";
+            await _sqlConnectionProvider.ExecuteAsync(query, new {Id = orderItem.Id, Amount = amount});
         }
     }
 }

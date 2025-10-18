@@ -2,6 +2,9 @@
 using eBar.DataStorage.Reader;
 using eBar.DataStorage.Repositories.Interfaces;
 using eBar.Core.Model;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 
 namespace eBar.DataStorage.Repositories
 {
@@ -29,9 +32,9 @@ namespace eBar.DataStorage.Repositories
         {
             var _sqlConnectionProvider = new SqlConnectionProvider(new ConfigReader());
             var query = @"UPDATE public.order
-                SET order_status_id=@orderId
+                SET order_status_id=@statusId
                 WHERE id =@Id;";
-            await _sqlConnectionProvider.ExecuteAsync(query, order);
+            await _sqlConnectionProvider.ExecuteAsync(query, new {Id = order.Id, OrderStatusId = statusId});
         }
 
         public async Task Delete(int id)
@@ -49,9 +52,12 @@ namespace eBar.DataStorage.Repositories
             return await _sqlConnectionProvider.QueryAsync<Order>(query);
         }
 
-        public Task<Order> GetByOrderId(int id)
+        public async Task<Order> GetByOrderId(int id)
         {
-            throw new NotImplementedException();
+            var _sqlConnectionProvider = new SqlConnectionProvider(new ConfigReader());
+            var query = @"SELECT * FROM public.order
+                WHERE id = @Id;";
+            return await _sqlConnectionProvider.QuerySingleOrDefaultAsync<Order>(query, new { id });
         }
 
         public async Task<IEnumerable<Order>> GetByTableId(int id)

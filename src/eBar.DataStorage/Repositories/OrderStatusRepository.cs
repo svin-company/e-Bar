@@ -2,6 +2,8 @@
 using eBar.DataStorage.Reader;
 using eBar.DataStorage.Repositories.Interfaces;
 using eBar.Core.Model;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace eBar.DataStorage.Repositories
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 namespace eBar.Core.Model
 {
@@ -10,7 +11,7 @@ namespace eBar.Core.Model
         private int _orderStatusId;
         private int _tableId;
 
-        public int StatusId
+        public int OrderStatusId
         {
             get => _orderStatusId;
             set

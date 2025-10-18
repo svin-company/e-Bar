@@ -2,6 +2,9 @@
 using eBar.DataStorage.Repositories.Interfaces;
 using eBar.DataStorage.Services.Interfaces;
 using eBar.Core.Model;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace eBar.DataStorage.Services
 {

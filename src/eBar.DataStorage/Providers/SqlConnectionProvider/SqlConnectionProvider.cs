@@ -32,11 +32,11 @@ namespace eBar.DataStorage.Providers.SqlConnectionProvider
             }
         }
 
-        public async Task ExecuteAsync<T>(string query, T entity)
+        public async Task ExecuteAsync(string query, object parameters)
         {
             await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
             {
-                await connection.ExecuteAsync(query, entity);
+                await connection.ExecuteAsync(query, parameters);
             }
         }
 

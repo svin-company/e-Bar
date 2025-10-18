@@ -1,4 +1,5 @@
 ﻿using eBar.Core.Model;
+using System.Threading.Tasks;
 
 namespace eBar.DataStorage.Services.Interfaces
 {
