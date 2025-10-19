@@ -21,15 +21,13 @@
 Margin="5"
  HorizontalAlignment="Left"></Label>
             <ComboBox Grid.Column="1"
-         x:Name="tableCombobox"
-         Width="40" Height="40"
-         HorizontalAlignment="Left"
-         Margin="5"
-         ItemsSource="{Binding Tables}"
-         SelectedIndex="0"
-         DisplayMemberPath="Id"
-         SelectedValuePath="Id">
-            </ComboBox>
+          x:Name="tableCombobox"
+          Width="40" Height="40"
+          HorizontalAlignment="Left"
+          Margin="5"
+          ItemsSource="{Binding Tables}"
+          SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
+          DisplayMemberPath="Id" />
         </Grid>
 
         <Grid Grid.Row="1">
@@ -40,15 +38,15 @@ Margin="5"
 
             <Grid Grid.Column="0">
                 <ListView x:Name="OrderListView"
-                         Margin="5"
-                         HorizontalAlignment="Left"
-                         ItemsSource="{Binding SelectedItem.Orders, ElementName=tableCombobox}"
-                         SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
+          Margin="5"
+          HorizontalAlignment="Left"
+          ItemsSource="{Binding OrdersForSelectedTable}"
+          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}" Width="80"/>
-                            <GridViewColumn Header="Дата" Width="120" DisplayMemberBinding ="{Binding OrderTime, StringFormat ='dd/MM/yyyy'}"/>
-                            <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="80"/>
+                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding OrderTime, StringFormat ='dd/MM/yyyy'}" Width="120"/>
+                            <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding OrderStatus}" Width="80"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -62,7 +60,8 @@ Margin="5"
                       Margin="5" 
                      CanUserAddRows="false" 
                      AutoGenerateColumns="False"
-                     ItemsSource="{Binding SelectedOrder.OrderItems}">
+                     ItemsSource="{Binding DataContext.SelectedOrder.OrderItems, 
+                                RelativeSource={RelativeSource AncestorType=Window}}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="2*" Header="Название" Binding="{Binding Food.Name}"/>
                         <DataGridTextColumn Width="1*" Header="Кол-во" Binding="{Binding Amount}"/>
@@ -78,7 +77,7 @@ Margin="5"
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" 
-                             Content = "{Binding SelectedOrder.Status}" 
+                             Content = "{Binding SelectedOrder.OrderStatus}" 
                               ContentStringFormat ="Статус заказа: {0}"/>
                     <Button Grid.Column="1"
                          Content="Cменить статус заказа"

@@ -6,11 +6,11 @@ namespace eBar.DataStorage.Repositories.Interfaces
 {
     public interface IOrderStatusRepository
     {
-        public Task<int> Add(string name);
-        public Task Update(OrderStatus status);
-        public Task Delete(int id);
-        public Task<IEnumerable<OrderStatus>> GetAll();
-        public Task<OrderStatus> Get(string name);
+        public Task<int> AddAsync(string name);
+        public Task UpdateAsync(OrderStatus status);
+        public Task DeleteAsync(int id);
+        public Task<IEnumerable<OrderStatus>> GetAllAsync();
+        public Task<OrderStatus> GetAsync(string name);
 
     }
 }

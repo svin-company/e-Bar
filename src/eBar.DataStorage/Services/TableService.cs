@@ -12,14 +12,19 @@ namespace eBar.DataStorage.Services
     {
         private readonly ITableRepository _tableRepository;
 
-        public async Task<List<Table>> GetAll()
+        public TableService(ITableRepository tableRepository)
         {
-            var tables = await _tableRepository.GetAll();
+            _tableRepository = tableRepository;
+        }
+
+        public async Task<IEnumerable<Table>> GetAllAsync()
+        {
+            var tables = await _tableRepository.GetAllAsync();
             if (tables.Count() == 0)
             {
-                throw new NoRecordsException($"Ошибка: таблица table пустая");
+                throw new NoRecordsException($"Ошибка: таблица restaurant_table пустая");
             }
-            return tables.ToList();
+            return tables;
         }
     }
 }

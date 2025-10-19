@@ -2,7 +2,7 @@
 {
     public class Food
     {
-        public  int Id { get;}
+        public  int Id { get; set; }
         public string Name { get;}
         public decimal Price { get; set; }
 

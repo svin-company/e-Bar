@@ -4,10 +4,9 @@ namespace eBar.Core.Model
 {
     public class OrderItem : INotifyPropertyChanged
     {
-        public int Id { get; }
+        public int Id { get; set; }
         public Food Food { get; set; }
         public decimal TotalPrice => Food.Price * Amount;
-        public int FoodId { get; set; }
         public int OrderId { get; set; }
         private int _amount;
         public int Amount
@@ -24,11 +23,10 @@ namespace eBar.Core.Model
             }
         }
 
-        public OrderItem(int amout, int foodId, int orderId)
+        public OrderItem(int amout, Food food)
         {
             Amount = amout;
-            FoodId = foodId;
-            OrderId = orderId;
+            Food = food;
         }
         public OrderItem() { }
         public OrderItem(int id) => Id = id;

@@ -6,6 +6,6 @@ namespace eBar.DataStorage.Repositories.Interfaces
 {
     public interface ITableRepository
     {
-        public Task<IEnumerable<Table>> GetAll();
+        public Task<IEnumerable<Table>> GetAllAsync();
     }
 }

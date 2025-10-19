@@ -4,7 +4,7 @@ namespace eBar.Core.Model
 {
     public class Table
     {
-        public int Id { get; }
+        public int Id { get; set; }
         public ObservableCollection <Order> Orders { get; set; }
 
         public Table()

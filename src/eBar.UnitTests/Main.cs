@@ -1,5 +1,5 @@
 ﻿using Kitchen=eBar.Core.Kitchen;
-using RMQ = eBar.MessageBroker.ConfigReader.ConfigReader;
+using RMQ = eBar.MessageBroker.Reader;
 using eBar.MessageBroker.MessageConsumer;
 using eBar.MessageBroker.MessageProducer;
 using Moq;
@@ -53,15 +53,15 @@ public class Tests
         string testName = "Xoт-дог";
         decimal testPrice = 100;
         var foodRepoMock = new Mock<IFoodRepository>();
-        foodRepoMock.Setup(x => x.Add(testName, testPrice))
+        foodRepoMock.Setup(x => x.AddAsync(testName, testPrice))
             .ReturnsAsync((string testName, decimal testPrice) => 1);
         var service = new FoodService(foodRepoMock.Object);
 
         //Act
-        int id = await service.AddFood(testName, testPrice);
+        int id = await service.AddAsync(testName, testPrice);
 
         //Assert
-        foodRepoMock.Verify(x => x.Add(testName, testPrice), Times.Once);
+        foodRepoMock.Verify(x => x.AddAsync(testName, testPrice), Times.Once);
         Assert.That(id, Is.EqualTo(1));
     }
 
@@ -74,20 +74,20 @@ public class Tests
         var newPrice = 100;
         var oldPrice = 300;
         foodRepoMock
-            .Setup(x => x.Get(name))
+            .Setup(x => x.GetAsync(name))
             .ReturnsAsync(new Waiter.Food(2, name, oldPrice));
         foodRepoMock
-            .Setup(x => x.Update(It.IsAny<Waiter.Food>()))
+            .Setup(x => x.UpdateAsync(It.IsAny<Waiter.Food>()))
             .Returns(Task.CompletedTask);
         var service = new FoodService(foodRepoMock.Object);
 
         //Act
-        var food = await service.GetFood(name);
-        await service.UpdateFood(name, newPrice);
+        var food = await service.GetAsync(name);
+        await service.UpdateAsync(name, newPrice);
 
         // Assert
-        foodRepoMock.Verify(x => x.Get(name), Times.Exactly(2));
-        foodRepoMock.Verify(r => r.Update(It.Is<Waiter.Food>(
+        foodRepoMock.Verify(x => x.GetAsync(name), Times.Exactly(2));
+        foodRepoMock.Verify(r => r.UpdateAsync(It.Is<Waiter.Food>(
             f => f.Id == food.Id &&
                     f.Name == food.Name &&
                     f.Price == newPrice
@@ -102,19 +102,19 @@ public class Tests
         string name = "Сэндвич";
         var foodRepoMock = new Mock<IFoodRepository>();
         foodRepoMock
-            .Setup(x => x.Get(name))
+            .Setup(x => x.GetAsync(name))
             .ReturnsAsync(new Waiter.Food(2, "Сэндвич", 300));
-        foodRepoMock.Setup(x => x.Delete(2))
+        foodRepoMock.Setup(x => x.DeleteAsync(2))
             .Returns(Task.CompletedTask);
         var service = new FoodService(foodRepoMock.Object);
 
         //Act
-        var food = await service.GetFood("Сэндвич");
-        await service.DeleteFood(food.Name);
+        var food = await service.GetAsync("Сэндвич");
+        await service.DeleteAsync(food.Name);
 
         //Assert
-        foodRepoMock.Verify(x => x.Get(name), Times.Exactly(2));
-        foodRepoMock.Verify(x => x.Delete(food.Id), Times.Once);
+        foodRepoMock.Verify(x => x.GetAsync(name), Times.Exactly(2));
+        foodRepoMock.Verify(x => x.DeleteAsync(food.Id), Times.Once);
 
     }
 

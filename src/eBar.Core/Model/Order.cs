@@ -3,13 +3,16 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 namespace eBar.Core.Model
 {
-    public partial class Order : INotifyPropertyChanged
+    public class Order : INotifyPropertyChanged
     {
-        public int Id { get; }
-        public ObservableCollection<OrderItem> OrderItems { get; set; }
-        public DateTime OrderTime { get; }
+        public int Id { get; set; }
+        public ObservableCollection<OrderItem> OrderItems { get; set; } = new ObservableCollection<OrderItem>();
+
+        public DateTime OrderTime { get; set; } = DateTime.Now;
+
         private int _orderStatusId;
         private int _tableId;
+        private string _statusName;
 
         public int OrderStatusId
         {
@@ -19,10 +22,23 @@ namespace eBar.Core.Model
                 if (_orderStatusId != value)
                 {
                     _orderStatusId = value;
-                    OnPropertyChanged(nameof(_orderStatusId));
+                    OnPropertyChanged(nameof(OrderStatusId));
                 }
             }
         }
+        public string OrderStatus
+        {
+            get => _statusName;
+            set
+            {
+                if (_statusName != value)
+                {
+                    _statusName = value;
+                    OnPropertyChanged(nameof(OrderStatus));
+                }
+            }
+        }
+
         public int TableId
         {
             get => _tableId;
@@ -31,19 +47,21 @@ namespace eBar.Core.Model
                 if (_tableId != value)
                 {
                     _tableId = value;
-                    OnPropertyChanged(nameof(_tableId));
+                    OnPropertyChanged(nameof(TableId));
                 }
             }
         }
-
-        public Order(DateTime orderTime, int orderStatusId, int tableId)
+        public Order() { }
+        public Order(int orderStatusId)
         {
-            OrderItems = new ObservableCollection<OrderItem>();
-            OrderTime = orderTime;
-            _orderStatusId = orderStatusId;
-            _tableId = tableId;
+            OrderStatusId = orderStatusId;
         }
-        public Order(int id) => Id = id;
+
+        public Order(int id, int orderStatusId)
+        {
+            Id = id;
+            OrderStatusId = orderStatusId;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>

@@ -12,33 +12,33 @@
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition  Width="4*"/>
         </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Foods}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-        <ItemsControl ItemsSource="{Binding Foods}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="3"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="5">
-                        <Image Source="/Images/food.jpg" 
-                                Height="80"/>
-                        <Label Content="{Binding Name}"
-                           HorizontalAlignment="Center"/>
-                        <Button Content="{Binding Price}"
-                            ContentStringFormat ="{}{0} ₽"
-                            HorizontalAlignment="Center"
-                            Width="50"
-                            Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding}"
-                            Margin="0,5,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <Image Source="/Images/food.jpg" 
+                        Height="80"/>
+                            <Label Content="{Binding Name}"
+                   HorizontalAlignment="Center"/>
+                            <Button Content="{Binding Price}"
+                    ContentStringFormat ="{}{0} ₽"
+                    HorizontalAlignment="Center"
+                    Width="50"
+                    Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    CommandParameter="{Binding}"
+                    Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>

@@ -1,8 +1,10 @@
-﻿using eBar.DataStorage.Exceptions;
-using eBar.DataStorage.Repositories.Interfaces;
+﻿using eBar.DataStorage.Repositories.Interfaces;
 using eBar.DataStorage.Services.Interfaces;
 using eBar.Core.Model;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace eBar.DataStorage.Services
 {
@@ -17,67 +19,73 @@ namespace eBar.DataStorage.Services
             _orderItemRepository = orderItemRepository;
         }
 
-        public async Task AddFood(int orderId, Food food)
+        public void AddFood(Order order, Food food)
         {
-            var existingOrder = await _orderRepository.GetByOrderId(orderId);
-            if (existingOrder == null)
+            if (order.OrderItems  != null)
             {
-                throw new EntityDoesNotExistException("Ошибка добавления товара, такого заказа не существует");
-            }
-            else
-            {
-                var existingOrderItem = await _orderItemRepository.GetByFoodId(food.Id);
+                var existingOrderItem = order.OrderItems
+                    .Where(x => x.Food.Name.Equals(food.Name))
+                    .FirstOrDefault();
                 if (existingOrderItem == null)
                 {
-                    var orderItem = new OrderItem(1, food.Id, orderId);
-                    await _orderItemRepository.AddOrderItem(orderItem);
+                    var orderItem = new OrderItem(1, food);
+                    order.OrderItems.Add(orderItem);
                 }
                 else
                 {
                     int amount = existingOrderItem.Amount++;
-                    await _orderItemRepository.IncreaseAmount(existingOrderItem, amount);
                 }
-            }
-        }
-
-        public async Task DecreaseItemAmount(OrderItem item)
-        {
-            var existingItem = await _orderItemRepository.Get(item.Id);
-            if (existingItem == null)
-            {
-                throw new EntityDoesNotExistException("Ошибка уменьшения количества: Элемент заказа не существует");
             }
             else
             {
-                if (item.Amount == 1)
-                {
-                    await DeleteItem(item);
-                }
-                else
-                {
-                    int amount = item.Amount--;
-                    await _orderItemRepository.IncreaseAmount(item, amount);
-                }
+                var orderItem = new OrderItem(1, food);
+                order.OrderItems.Add(orderItem);
             }
         }
 
-        public async Task DeleteItem(OrderItem item)
+        // Знаю, что "магические числа" - это плохо, как лучше сделать?
+        public async Task<Order> UpdateStatusAsync(Order order)
         {
-            await _orderItemRepository.Delete(item.Id);
-        }
-
-        public async Task IncreaseItemAmount(OrderItem item)
-        {
-            var existingItem= await _orderItemRepository.Get(item.Id);
-            if (existingItem == null)
+            if (order.OrderStatusId == 1)
             {
-                throw new EntityDoesNotExistException("Ошибка увеличения количества: Элемент заказа не существует");
+                order.OrderStatusId = 2;
+                return await _orderRepository.ChangeStatusAsync(order, 2);
             }
             else
             {
-                int amount = item.Amount++;
-                await _orderItemRepository.IncreaseAmount(item, amount);
+                order.OrderStatusId = 1;
+                return await _orderRepository.ChangeStatusAsync(order, 1);
             }
+        }
+
+        public async Task<bool> AddOrderAsync(Order order, int tableId)
+        {
+            if (order.OrderItems.Count == 0)
+                return false;
+
+            await _orderRepository.AddOrderWithItemsAsync(order, tableId);
+            return true;
+        }
+
+        public void DeleteItem(Order order, OrderItem orderItem)
+        {
+            order.OrderItems.Remove(orderItem);
+        }
+
+        public async Task<List<Order>> GetOrdersByTableIdAsync(int id)
+        {
+            var selectedOrders = await _orderRepository.GetByTableIdAsync(id);
+            return selectedOrders.ToList();
+        }
+        public async Task<Order> GetOrderByIdAsync(int id)
+        {
+            return await _orderRepository.GetByOrderIdAsync(id);
+        }
+
+        public async Task<List<OrderItem>> GetItemsByIdAsync(int id)
+        {
+            var items = await _orderRepository.GetOrderItemsAsync(id);
+            return items.ToList();
         }
     }
 }

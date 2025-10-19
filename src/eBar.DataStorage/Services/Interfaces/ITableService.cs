@@ -5,6 +5,6 @@ namespace eBar.DataStorage.Services.Interfaces
 {
     public interface ITableService
     {
-        public Task<List<Table>> GetAll();
+        public Task<IEnumerable<Table>> GetAllAsync();
     }
 }

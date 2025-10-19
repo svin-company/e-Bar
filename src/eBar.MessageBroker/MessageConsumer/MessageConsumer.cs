@@ -1,4 +1,4 @@
-﻿using eBar.MessageBroker.ConfigReader.ConfigReader;
+﻿using eBar.MessageBroker.Reader;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
