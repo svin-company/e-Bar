@@ -17,7 +17,15 @@ namespace eBar.KitchenDisplayApp
         
         public static readonly DependencyProperty MiddleTargetProperty = 
             DependencyProperty.Register(nameof(MiddleTarget), typeof(StackPanel), typeof(OrderControl));
+        public static readonly DependencyProperty ScrollTargetProperty = 
+            DependencyProperty.Register(nameof(ScrollTarget), typeof(ScrollViewer), typeof(OrderControl));
 
+
+        public ScrollViewer ScrollTarget
+        {
+            get => (ScrollViewer)GetValue(ScrollTargetProperty);
+            set => SetValue(ScrollTargetProperty, value);
+        }
         public StackPanel LeftTarget
         {
             get => (StackPanel)GetValue(LeftTargetProperty);
@@ -125,6 +133,8 @@ namespace eBar.KitchenDisplayApp
                 
                 var midText = new TextBlock
                 {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Center,
                     Text = text,
                     Foreground = System.Windows.Media.Brushes.White,
                     Margin = new System.Windows.Thickness(0, 2, 0, 6)
@@ -145,6 +155,9 @@ namespace eBar.KitchenDisplayApp
             activeOrders.Add(entry);
             timer.Start();
             orderCounter++;
+            
+            Dispatcher.BeginInvoke(new Action(() => ScrollTarget?.ScrollToBottom()), DispatcherPriority.Background);
+            
         }
 
         private void DeleteOrdersButton_Click(object sender, RoutedEventArgs e)

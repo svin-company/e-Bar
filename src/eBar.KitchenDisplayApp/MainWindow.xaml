@@ -18,40 +18,55 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200*" />
-            <ColumnDefinition Width="400*" />
-            <ColumnDefinition Width="40*" />
+            <ColumnDefinition  />
+            <ColumnDefinition  />
+            <ColumnDefinition  />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Background="#404040">
-            <StackPanel
-                VerticalAlignment="Top"
-                x:Name="LeftStackPanel"
-                Grid.Row="0"
-                Orientation="Vertical"
-                HorizontalAlignment="Left" />
+
+        <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      x:Name="MainScrollViewer">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition  />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <Grid HorizontalAlignment="Left" Background="#404040" Grid.Column="0">
+                    <StackPanel
+                        VerticalAlignment="Top"
+                        x:Name="LeftStackPanel"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Left" />
+                </Grid>
+
+                <Grid HorizontalAlignment="Left"  Grid.Column="1">
+                    <StackPanel
+                        HorizontalAlignment="Left"
+                        x:Name="MiddleStackPanel"
+                        VerticalAlignment="Top" />
+                </Grid>
+
+                <Grid HorizontalAlignment="Right"  Background="#404040" Grid.Column="2">
+                    <StackPanel
+                        VerticalAlignment="Top"
+                        x:Name="RightStackPanel"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#303030">
+            <controls:OrderControl
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                LeftTarget="{Binding ElementName=LeftStackPanel}"
+                MiddleTarget="{Binding ElementName=MiddleStackPanel}"
+                RightTarget="{Binding ElementName=RightStackPanel}"
+                ScrollTarget="{Binding ElementName=MainScrollViewer}"/>
         </Grid>
-
-
-        <StackPanel x:Name="MiddleStackPanel" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" />
-
-
-        <Grid Grid.Row="0" Grid.Column="2" Background="#404040">
-            <StackPanel
-                VerticalAlignment="Top"
-                x:Name="RightStackPanel"
-                Grid.Row="0"
-                Orientation="Vertical"
-                HorizontalAlignment="Center" />
-        </Grid>
-
-
-        <Grid Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Background="#303030">
-        </Grid>
-        <controls:OrderControl Grid.Row="1" Grid.Column="2"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               LeftTarget="{Binding ElementName=LeftStackPanel}"
-                               MiddleTarget="{Binding ElementName=MiddleStackPanel}"
-                               RightTarget="{Binding ElementName=RightStackPanel}" />
     </Grid>
 </Window>
