@@ -1,4 +1,4 @@
-name: CI
+name: Build Checks
 
 on:
   pull_request:
@@ -7,33 +7,84 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build_core:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      - name: Setup dotnet 9.0
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
-        run: dotnet restore
-        working-directory: ./src
-      - name: Build
-        run: dotnet build --configuration Debug --no-restore
-        working-directory: ./src
+        shell: bash
+        run: |
+          while IFS= read -r proj; do
+            echo "Restoring $proj ..."
+            dotnet restore "$proj"
+          done < ./build/core.txt
+      - name: Disable GitHub warning matching
+        run: echo "::remove-matcher owner=csc::"
+      - name: Build applications
+        shell: bash
+        run: |
+          while IFS= read -r proj; do
+            echo "Building $proj ..."
+            dotnet build "$proj" --no-restore --configuration Release
+          done < ./build/core.txt
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-build
+          path: src/**/bin/Release
+          
+  build_framework:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+      - name: Restore dependencies
+        run: nuget restore ./src/eBar.sln
+      - name: Disable GitHub warning matching
+        run: echo "::remove-matcher owner=csc::"
+      - name: Build applications
+        shell: pwsh
+        run: |
+          $projects = Get-Content ./build/framework.txt
+          foreach ($proj in $projects) {
+            Write-Host "Building $proj ..."
+            msbuild $proj /p:Configuration=Release /p:TargetFrameworkVersion=v4.8 /m
+          }
 
   test:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_core
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      - name: Setup dotnet 9.0
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
-        run: dotnet restore
-        working-directory: ./src
-      - name: Test
-        run: dotnet test --configuration Debug --verbosity normal
-        working-directory: ./src
+        shell: bash
+        run: |
+          while IFS= read -r proj; do
+            echo "Restoring $proj ..."
+            dotnet restore "$proj"
+          done < ./build/core.txt
+      - name: Disable GitHub warning matching
+        run: echo "::remove-matcher owner=csc::"
+      - name: Create appsettings.json
+        run: echo '${{ secrets.APPSETTINGS_JSON }}' > src/eBar.UnitTests/appsettings.json
+      - name: Test dotnet projects
+        shell: bash
+        run: |
+          while IFS= read -r proj; do
+            echo "Testing $proj ..."
+            dotnet test "$proj" --no-restore --configuration Release --verbosity normal
+          done < ./build/tests.txt

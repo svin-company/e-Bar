@@ -53,5 +53,11 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
+# IDE files and folders
 .idea
 .vs
+*.user
+
+# CI/CD
+.env
+appsettings.json
