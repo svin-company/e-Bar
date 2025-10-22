@@ -28,7 +28,12 @@ namespace eBar.DataStorage.Services
                     .FirstOrDefault();
                 if (existingOrderItem == null)
                 {
-                    var orderItem = new OrderItem(1, food);
+                    var orderItem = new OrderItem
+                    {
+                        Id = 1,
+                        Food = food,
+                        Amount = 1
+                    };
                     order.OrderItems.Add(orderItem);
                 }
                 else
@@ -38,24 +43,20 @@ namespace eBar.DataStorage.Services
             }
             else
             {
-                var orderItem = new OrderItem(1, food);
+                var orderItem = new OrderItem
+                {
+                    Id = 1, 
+                    Food = food,
+                    Amount = 1
+                };
                 order.OrderItems.Add(orderItem);
             }
         }
 
-        // Знаю, что "магические числа" - это плохо, как лучше сделать?
         public async Task<Order> UpdateStatusAsync(Order order)
         {
-            if (order.OrderStatusId == 1)
-            {
-                order.OrderStatusId = 2;
-                return await _orderRepository.ChangeStatusAsync(order, 2);
-            }
-            else
-            {
-                order.OrderStatusId = 1;
-                return await _orderRepository.ChangeStatusAsync(order, 1);
-            }
+            order.IsOrderOpen = !order.IsOrderOpen;
+            return await _orderRepository.ChangeStatusAsync(order, order.IsOrderOpen);
         }
 
         public async Task<bool> AddOrderAsync(Order order, int tableId)

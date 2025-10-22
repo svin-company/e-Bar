@@ -75,7 +75,13 @@ public class Tests
         var oldPrice = 300;
         foodRepoMock
             .Setup(x => x.GetAsync(name))
-            .ReturnsAsync(new Waiter.Food(2, name, oldPrice));
+            .ReturnsAsync( new Waiter.Food 
+            { 
+                Id= 2, 
+                Name = name, 
+                Price = oldPrice 
+            });
+
         foodRepoMock
             .Setup(x => x.UpdateAsync(It.IsAny<Waiter.Food>()))
             .Returns(Task.CompletedTask);
@@ -103,7 +109,12 @@ public class Tests
         var foodRepoMock = new Mock<IFoodRepository>();
         foodRepoMock
             .Setup(x => x.GetAsync(name))
-            .ReturnsAsync(new Waiter.Food(2, "Сэндвич", 300));
+            .ReturnsAsync(new Waiter.Food
+            {
+                Id = 2,
+                Name = "Сэндвич",
+                Price = 300
+            });
         foodRepoMock.Setup(x => x.DeleteAsync(2))
             .Returns(Task.CompletedTask);
         var service = new FoodService(foodRepoMock.Object);

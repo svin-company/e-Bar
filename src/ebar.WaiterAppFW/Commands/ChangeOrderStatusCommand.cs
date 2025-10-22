@@ -18,7 +18,7 @@ namespace eBar.WaiterAppFW.Commands
             {
                 var updatedOrder = await _orderService.UpdateStatusAsync(order);
                 order.OrderStatusId = updatedOrder.OrderStatusId;
-                order.OrderStatus = updatedOrder.OrderStatus;
+                order.IsOrderOpen = updatedOrder.IsOrderOpen;
             }
         }
     }

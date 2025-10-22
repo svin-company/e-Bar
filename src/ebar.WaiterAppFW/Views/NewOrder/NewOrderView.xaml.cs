@@ -27,8 +27,10 @@ namespace ebar.WaiterAppFW.Views.NewOrder
             IOrderService orderService = new OrderService(orderRepository, orderItemRepository);
             IFoodService foodService = new FoodService(foodRepository);
 
-            int orderIsOpen = 1;
-            var order = new Order(orderIsOpen);
+            var order = new Order
+            {
+                IsOrderOpen = true
+            };
             var newOrderViewModel = new NewOrderViewModel(order, tableService, foodService, orderService);
             newOrderViewModel.RequestClose += () =>
             {

@@ -55,7 +55,12 @@ namespace eBar.DataStorage.Services
         {
             var existingFood = await _foodRepository.GetAsync(oldName) ?? 
                 throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {oldName} не существует");
-            var food = new Food(existingFood.Id, newName, existingFood.Price);
+            var food = new Food
+            {
+                Id = existingFood.Id,
+                Name = newName,
+                Price = existingFood.Price 
+            };
             await _foodRepository.UpdateAsync(food);
         }
 
@@ -63,7 +68,12 @@ namespace eBar.DataStorage.Services
         {
             var existingFood = await _foodRepository.GetAsync(name) ?? 
                 throw new EntityDoesNotExistException($"Ошибка изменения: Продукта с именем {name} не существует");
-            var food = new Food(existingFood.Id, existingFood.Name, newPrice);
+            var food = new Food
+            {
+                Id= existingFood.Id, 
+                Name = existingFood.Name, 
+                Price = newPrice
+            };
             await _foodRepository.UpdateAsync(food);
         }
     }

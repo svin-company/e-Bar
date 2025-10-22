@@ -23,14 +23,6 @@ namespace eBar.Core.Model
             }
         }
 
-        public OrderItem(int amout, Food food)
-        {
-            Amount = amout;
-            Food = food;
-        }
-        public OrderItem() { }
-        public OrderItem(int id) => Id = id;
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

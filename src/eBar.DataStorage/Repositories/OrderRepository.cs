@@ -48,17 +48,30 @@ namespace eBar.DataStorage.Repositories
             }
         }
 
-        public async Task<Order> ChangeStatusAsync(Order order, int statusId)
+        public async Task<Order> ChangeStatusAsync(Order order, bool orderStatus)
         {
             var connectionString = _configReader.GetConnectionString();
+            int statusId = await GetStatusId(orderStatus);
+
             var updateQuery = @"UPDATE public.restaurant_order
-                SET status_id = @OrderStatusId
+                SET status_id = @statusId
                 WHERE id =@Id;";
             await using (var connection = new NpgsqlConnection(connectionString))
             {
-                await connection.ExecuteAsync(updateQuery, new { Id = order.Id, OrderStatusId = statusId });
+                await connection.ExecuteAsync(updateQuery, new { Id = order.Id, statusId = statusId });
             }
             return await GetByOrderIdWithStatus(order.Id);
+        }
+
+        public async Task<int> GetStatusId(bool orderStatus)
+        {
+            var connectionString = _configReader.GetConnectionString();
+            var query = @"SELECT id FROM public.order_status
+                    WHERE is_order_open = @orderStatus;";
+            await using (var connection = new NpgsqlConnection(connectionString))
+            {
+                return await connection.ExecuteScalarAsync<int>(query, new {orderStatus});
+            }
         }
 
         public async Task AddOrderWithItemsAsync(Order order, int tableId)
@@ -145,7 +158,7 @@ namespace eBar.DataStorage.Repositories
                 o.order_time,
                 o.status_id AS orderstatusid,
                 o.table_id,
-                s.name AS orderstatus
+                s.is_order_open AS isOrderOpen
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
                 WHERE o.id = @id;";
@@ -162,7 +175,7 @@ namespace eBar.DataStorage.Repositories
                 o.order_time,
                 o.status_id AS orderstatusid,
                 o.table_id,
-                s.name AS orderstatus
+                s.is_order_open AS isOrderOpen
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
                 WHERE o.table_id = @id;";
@@ -174,7 +187,7 @@ namespace eBar.DataStorage.Repositories
         public async Task<IEnumerable<OrderItem>> GetOrderItemsAsync(int orderId)
         {
             var connectionString = _configReader.GetConnectionString();
-            var sql = @"SELECT 
+            var query = @"SELECT 
                 i.id AS order_item_id,
                 i.amount AS Amount,
                 i.food_id AS FoodId,
@@ -188,7 +201,7 @@ namespace eBar.DataStorage.Repositories
             await using (var connection = new NpgsqlConnection(connectionString))
             {
                 var result = await connection.QueryAsync<OrderItem, Food, OrderItem>(
-                    sql,
+                    query,
                     (item, food) =>
                     {
                         item.Food = food;

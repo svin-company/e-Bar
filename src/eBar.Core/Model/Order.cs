@@ -12,7 +12,7 @@ namespace eBar.Core.Model
 
         private int _orderStatusId;
         private int _tableId;
-        private string _statusName;
+        private bool _isOrderOpen;
 
         public int OrderStatusId
         {
@@ -26,15 +26,15 @@ namespace eBar.Core.Model
                 }
             }
         }
-        public string OrderStatus
+        public bool IsOrderOpen
         {
-            get => _statusName;
+            get => _isOrderOpen;
             set
             {
-                if (_statusName != value)
+                if (_isOrderOpen != value)
                 {
-                    _statusName = value;
-                    OnPropertyChanged(nameof(OrderStatus));
+                    _isOrderOpen = value;
+                    OnPropertyChanged(nameof(IsOrderOpen));
                 }
             }
         }
@@ -50,17 +50,6 @@ namespace eBar.Core.Model
                     OnPropertyChanged(nameof(TableId));
                 }
             }
-        }
-        public Order() { }
-        public Order(int orderStatusId)
-        {
-            OrderStatusId = orderStatusId;
-        }
-
-        public Order(int id, int orderStatusId)
-        {
-            Id = id;
-            OrderStatusId = orderStatusId;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
