@@ -61,3 +61,4 @@ nunit-*.xml
 # CI/CD
 .env
 appsettings.json
+/src/ebar.WaiterAppFW/eBar.WaiterAppFW.csproj.user

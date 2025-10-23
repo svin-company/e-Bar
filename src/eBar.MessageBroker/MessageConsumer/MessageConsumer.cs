@@ -1,4 +1,4 @@
-﻿using eBar.MessageBroker.ConfigReader.ConfigReader;
+﻿using eBar.MessageBroker.Reader;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -14,7 +14,6 @@ namespace eBar.MessageBroker.MessageConsumer
         public MessageConsumer(IConfigReader configReader)
         {
             _configReader = configReader;
-            //Task.Run(() =>GetMessageAsync("ebarTest"));
         }
 
         public async Task<string> GetMessageAsync(string queueName)

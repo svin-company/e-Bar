@@ -5,37 +5,24 @@ using eBar.DataStorage.Services.Interfaces;
 using eBar.DataStorage.Services;
 using eBar.WaiterApp.ViewModel;
 using System.Windows;
-using eBar.Core.Model;
 
-namespace eBar.WaiterApp.Views.NewOrder
+
+namespace eBar.WaiterApp.Views.OrdersList
 {
-
-    public partial class NewOrderView : Window
+    public partial class OrdersListView : Window
     {
-        public NewOrderView()
+        public OrdersListView()
         {
             var reader = new ConfigReader();
 
             ITableRepository tableRepository = new TableRepository(reader);
             ITableService tableService = new TableService(tableRepository);
 
-            IFoodRepository foodRepository = new FoodRepository(reader);
-
             IOrderItemRepository orderItemRepository = new OrderItemRepository(reader);
             IOrderRepository orderRepository = new OrderRepository(reader);
             IOrderService orderService = new OrderService(orderRepository, orderItemRepository);
-            IFoodService foodService = new FoodService(foodRepository);
 
-            var order = new Order
-            {
-                IsOrderOpen = true
-            };
-            var newOrderViewModel = new NewOrderViewModel(order, tableService, foodService, orderService);
-            newOrderViewModel.RequestClose += () =>
-            {
-                this.Dispatcher.Invoke(() => this.Close());
-            };
-            DataContext = newOrderViewModel;
+            DataContext = new OrderListViewModel(tableService, orderService);
             InitializeComponent();
         }
     }

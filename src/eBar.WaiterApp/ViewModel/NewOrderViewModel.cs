@@ -1,13 +1,16 @@
 ﻿using eBar.WaiterApp.Commands;
-using eBar.WaiterApp.Model;
-using eBar.WaiterApp.Storages;
+using eBar.Core.Model;
+using eBar.DataStorage.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-
+using eBar.DataStorage.Exceptions;
 namespace eBar.WaiterApp.ViewModel
 {
     public class NewOrderViewModel: ViewModelBase
     {
+        private readonly ITableService _tableService;
+        private readonly IFoodService _foodService;
+        private readonly IOrderService _orderService;
         public ObservableCollection<Table> Tables { get; set; }
         public ObservableCollection<Food> Foods { get; set; }
         private Table _table;
@@ -38,15 +41,35 @@ namespace eBar.WaiterApp.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ConfirmCommand { get; }
 
-        public NewOrderViewModel(Order order)
+        public NewOrderViewModel(Order order, ITableService tableService, IFoodService foodService, IOrderService orderService)
         {
+            _foodService = foodService;
+            _tableService = tableService;
+            _orderService = orderService;
             Order = order;
-            Tables = TableStorage.GetAll();
-            Foods = FoodStorage.GetAll();
-            AddCommand = new AddToOrderCommand(Order);
-            DeleteCommand = new DeleteItemCommand(Order);
-            ConfirmCommand = new ConfirmCommand(Order, OnOrderConfirmed);
+            LoadTables();
+            AddCommand = new AddToOrderCommand(Order, orderService);
+            DeleteCommand = new DeleteItemCommand(Order, orderService);
+            ConfirmCommand = new ConfirmCommand(Order, orderService, OnOrderConfirmed);
 
+        }
+
+        private async void LoadTables()
+        {
+            try
+            {
+                var tables = await _tableService.GetAllAsync();
+                Tables = new ObservableCollection<Table>(tables);
+                OnPropertyChanged(nameof(Tables));
+
+                var foods = await _foodService.GetAllAsync();
+                Foods = new ObservableCollection<Food>(foods);
+                OnPropertyChanged(nameof(Foods));
+            }
+            catch (NoRecordsException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void OnOrderConfirmed()
