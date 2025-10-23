@@ -1,0 +1,1 @@
+./src/eBar.KitchenDisplayApp/eBar.KitchenDisplayApp.csproj

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.MessageBroker", "eBar.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.DataStorage", "eBar.DataStorage\eBar.DataStorage.csproj", "{86698383-AE40-40A1-AC1D-9C02879D0093}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.KitchenDisplayApp", "eBar.KitchenDisplayApp\eBar.KitchenDisplayApp.csproj", "{2E6C968C-DACD-49E6-BFBA-8A1D99FCD105}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{86698383-AE40-40A1-AC1D-9C02879D0093}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86698383-AE40-40A1-AC1D-9C02879D0093}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86698383-AE40-40A1-AC1D-9C02879D0093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6C968C-DACD-49E6-BFBA-8A1D99FCD105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6C968C-DACD-49E6-BFBA-8A1D99FCD105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6C968C-DACD-49E6-BFBA-8A1D99FCD105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6C968C-DACD-49E6-BFBA-8A1D99FCD105}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{DF49DEF1-BA21-4A85-AEA5-3BB55AD6A2A3} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
 		{16EF8798-A523-47D0-96FC-5BB669EAAC62} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
 		{86698383-AE40-40A1-AC1D-9C02879D0093} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
+		{2E6C968C-DACD-49E6-BFBA-8A1D99FCD105} = {6B6EEE38-107F-423D-A45F-B074DFFD40C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A92639DD-0F34-4546-A5BE-06B8CC9861EB}
