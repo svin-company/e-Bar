@@ -1,13 +1,13 @@
 ﻿using eBar.DataStorage.Reader;
-using eBar.DataStorage.Repositories;
 using eBar.DataStorage.Repositories.Interfaces;
-using eBar.DataStorage.Services;
+using eBar.DataStorage.Repositories;
 using eBar.DataStorage.Services.Interfaces;
-using eBar.WaiterAppFW.ViewModel;
+using eBar.DataStorage.Services;
+using eBar.WaiterApp.ViewModel;
 using System.Windows;
 
 
-namespace ebar.WaiterAppFW.Views.OrderList
+namespace eBar.WaiterApp.Views.OrdersList
 {
     public partial class OrdersListView : Window
     {

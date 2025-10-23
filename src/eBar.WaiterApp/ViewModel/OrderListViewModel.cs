@@ -1,14 +1,12 @@
 ﻿using eBar.Core.Model;
 using eBar.DataStorage.Exceptions;
 using eBar.DataStorage.Services.Interfaces;
-using eBar.WaiterAppFW.Commands;
-using System;
+using eBar.WaiterApp.Commands;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 
-namespace eBar.WaiterAppFW.ViewModel
+namespace eBar.WaiterApp.ViewModel
 {
     public class OrderListViewModel : ViewModelBase
     {

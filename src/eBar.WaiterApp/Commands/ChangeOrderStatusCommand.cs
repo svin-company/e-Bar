@@ -1,6 +1,6 @@
 ﻿using eBar.Core.Model;
 using eBar.DataStorage.Services.Interfaces;
-namespace eBar.WaiterAppFW.Commands
+namespace eBar.WaiterApp.Commands
 {
     public class ChangeOrderStatusCommand : BaseCommand
     {

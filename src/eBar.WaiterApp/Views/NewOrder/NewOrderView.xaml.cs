@@ -1,20 +1,19 @@
-﻿using eBar.Core.Model;
-using eBar.DataStorage.Reader;
-using eBar.DataStorage.Repositories;
+﻿using eBar.DataStorage.Reader;
 using eBar.DataStorage.Repositories.Interfaces;
-using eBar.DataStorage.Services;
+using eBar.DataStorage.Repositories;
 using eBar.DataStorage.Services.Interfaces;
-using eBar.WaiterAppFW.ViewModel;
+using eBar.DataStorage.Services;
+using eBar.WaiterApp.ViewModel;
 using System.Windows;
+using eBar.Core.Model;
 
-
-namespace ebar.WaiterAppFW.Views.NewOrder
+namespace eBar.WaiterApp.Views.NewOrder
 {
+
     public partial class NewOrderView : Window
     {
         public NewOrderView()
         {
-
             var reader = new ConfigReader();
 
             ITableRepository tableRepository = new TableRepository(reader);
@@ -38,7 +37,6 @@ namespace ebar.WaiterAppFW.Views.NewOrder
             };
             DataContext = newOrderViewModel;
             InitializeComponent();
-
         }
     }
 }

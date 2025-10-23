@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
-namespace eBar.WaiterAppFW.Commands
+namespace eBar.WaiterApp.Commands
 {
     public abstract class BaseCommand : ICommand
     {

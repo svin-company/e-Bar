@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace eBar.WaiterAppFW.ViewModel
+namespace eBar.WaiterApp.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

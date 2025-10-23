@@ -1,12 +1,9 @@
-﻿using ebar.WaiterAppFW.Views.NewOrder;
-using ebar.WaiterAppFW.Views.OrderList;
+﻿using eBar.WaiterApp.Views.NewOrder;
+using eBar.WaiterApp.Views.OrdersList;
 using System.Windows;
 
-namespace ebar.WaiterAppFW.Views.Home
+namespace eBar.WaiterApp.Views.Home
 {
-    /// <summary>
-    /// Interaction logic for HomeView.xaml
-    /// </summary>
     public partial class HomeView : Window
     {
         public HomeView()

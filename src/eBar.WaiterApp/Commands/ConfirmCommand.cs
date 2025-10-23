@@ -1,10 +1,8 @@
 ﻿using eBar.Core.Model;
 using eBar.DataStorage.Services.Interfaces;
-using System;
-using System.Net.Http;
 using System.Windows;
 
-namespace eBar.WaiterAppFW.Commands
+namespace eBar.WaiterApp.Commands
 {
     public class ConfirmCommand: BaseCommand
     {

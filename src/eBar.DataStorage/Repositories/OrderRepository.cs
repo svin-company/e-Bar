@@ -76,24 +76,35 @@ namespace eBar.DataStorage.Repositories
 
         public async Task AddOrderWithItemsAsync(Order order, int tableId)
         {
+            var statusQuery = @"SELECT id FROM public.order_status 
+                WHERE is_order_open = @IsOrderOpen 
+                LIMIT 1";
+
             var orderQuery = @"INSERT INTO public.restaurant_order (order_time, status_id, table_id)
                 VALUES (@OrderTime, @OrderStatusId, @TableId)
                 RETURNING id;";
+
             var orderItemQuery = @"INSERT INTO public.order_item (amount, food_id, restaurant_order_id) 
-                        VALUES (@Amount, @FoodId, @OrderId);"
-            ;
+                        VALUES (@Amount, @FoodId, @OrderId);";
 
             var connection = new NpgsqlConnection(_configReader.GetConnectionString());
             await connection.OpenAsync();
+
             using var transaction = connection.BeginTransaction();
             try
             {
-                Console.WriteLine($"Connection state: {connection.State}");
+                int statusid = await connection.ExecuteScalarAsync<int>(statusQuery, 
+                    new { isOrderOpen = order.IsOrderOpen }, transaction);
+
                 int orderId = await connection.ExecuteScalarAsync<int>(orderQuery,
-                    new { OrderTime = order.OrderTime, OrderStatusId = order.OrderStatusId, TableId = tableId },
-                    transaction);
+                    new { 
+                        OrderTime = order.OrderTime, 
+                        OrderStatusId = statusid, 
+                        TableId = tableId 
+                    }, transaction);
 
                 order.Id = orderId;
+
                 foreach (var item in order.OrderItems)
                 {
                     item.OrderId = order.Id;

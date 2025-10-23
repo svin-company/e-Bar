@@ -1,11 +1,10 @@
-﻿using eBar.WaiterAppFW.Commands;
+﻿using eBar.WaiterApp.Commands;
 using eBar.Core.Model;
 using eBar.DataStorage.Services.Interfaces;
 using System.Collections.ObjectModel;
-using System;
 using System.Windows.Input;
 using eBar.DataStorage.Exceptions;
-namespace eBar.WaiterAppFW.ViewModel
+namespace eBar.WaiterApp.ViewModel
 {
     public class NewOrderViewModel: ViewModelBase
     {
