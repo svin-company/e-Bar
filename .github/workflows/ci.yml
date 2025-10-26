@@ -38,26 +38,33 @@ jobs:
           name: core-build
           path: src/**/bin/Release
           
-  build_framework:
+  build_applications:
     runs-on: windows-latest
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Setup dotnet 9.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
       - name: Restore dependencies
-        run: nuget restore ./src/eBar.sln
+        run: |
+          $projects = Get-Content ./build/application.txt
+          foreach ($proj in $projects) {
+            Write-Host "Restoring $proj ..."
+            dotnet restore $proj
+          }
       - name: Disable GitHub warning matching
         run: echo "::remove-matcher owner=csc::"
       - name: Build applications
         shell: pwsh
         run: |
-          $projects = Get-Content ./build/framework.txt
+          $projects = Get-Content ./build/application.txt
           foreach ($proj in $projects) {
             Write-Host "Building $proj ..."
-            msbuild $proj /p:Configuration=Release /p:TargetFrameworkVersion=v4.8 /m
+            dotnet build $proj
           }
 
   test:
