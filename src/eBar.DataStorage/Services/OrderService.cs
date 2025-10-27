@@ -59,12 +59,12 @@ namespace eBar.DataStorage.Services
             return await _orderRepository.ChangeStatusAsync(order, order.IsOrderOpen);
         }
 
-        public async Task<bool> AddOrderAsync(Order order, int tableId)
+        public async Task<bool> AddOrderAsync(Order order, int tableId, int waiterId)
         {
             if (order.OrderItems.Count == 0)
                 return false;
 
-            await _orderRepository.AddOrderWithItemsAsync(order, tableId);
+            await _orderRepository.AddOrderWithItemsAsync(order, tableId, waiterId);
             return true;
         }
 

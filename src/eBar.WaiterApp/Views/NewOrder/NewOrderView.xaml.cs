@@ -26,11 +26,14 @@ namespace eBar.WaiterApp.Views.NewOrder
             IOrderService orderService = new OrderService(orderRepository, orderItemRepository);
             IFoodService foodService = new FoodService(foodRepository);
 
+            IWaiterRepository waiterRepository = new WaiterRepository(reader);
+            IWaiterService waiterService = new WaiterService(waiterRepository);
+
             var order = new Order
             {
                 IsOrderOpen = true
             };
-            var newOrderViewModel = new NewOrderViewModel(order, tableService, foodService, orderService);
+            var newOrderViewModel = new NewOrderViewModel(order, tableService, foodService, orderService, waiterService);
             newOrderViewModel.RequestClose += () =>
             {
                 this.Dispatcher.Invoke(() => this.Close());

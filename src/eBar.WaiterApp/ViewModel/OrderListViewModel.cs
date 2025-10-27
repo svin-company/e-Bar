@@ -13,6 +13,7 @@ namespace eBar.WaiterApp.ViewModel
         public ObservableCollection<Table> Tables { get; set; }
         private readonly ITableService _tableService;
         private readonly IOrderService _orderService;
+        private readonly IWaiterService _waiterService;
         private Table _selectedTable;
         public Table SelectedTable
         {
@@ -56,7 +57,9 @@ namespace eBar.WaiterApp.ViewModel
                 foreach (var order in orders)
                 {
                     var items = await _orderService.GetItemsByIdAsync(order.Id);
+
                     order.OrderItems = new ObservableCollection<OrderItem>(items);
+                    order.WaiterName = await _waiterService.GetByIdAsync(order.WaiterId);
                 }
                 OrdersForSelectedTable = new ObservableCollection<Order>(orders);
             }
@@ -69,10 +72,11 @@ namespace eBar.WaiterApp.ViewModel
 
         public ICommand ChangeStatusCommand { get; }
 
-        public OrderListViewModel(ITableService tableService, IOrderService orderService)
+        public OrderListViewModel(ITableService tableService, IOrderService orderService, IWaiterService waiterService)
         {
             _tableService = tableService;
             _orderService = orderService;
+            _waiterService = waiterService;
             LoadTable();
             ChangeStatusCommand = new ChangeOrderStatusCommand(orderService);
         }

@@ -13,6 +13,32 @@ namespace eBar.Core.Model
         private int _orderStatusId;
         private int _tableId;
         private bool _isOrderOpen;
+        private int _waiterId;
+        private string _waiterName;
+
+        public string WaiterName
+        {
+            get => _waiterName;
+            set
+            {
+                if (_waiterName != value)
+                    _waiterName = value;
+                OnPropertyChanged(nameof(WaiterName));
+            }
+        }
+
+        public int WaiterId
+        {
+            get => _waiterId;
+            set
+            {
+                if (_waiterId !=value)
+                {
+                    _waiterId = value;
+                    OnPropertyChanged(nameof(WaiterId));
+                }
+            }
+        }
 
         public int OrderStatusId
         {
@@ -51,6 +77,8 @@ namespace eBar.Core.Model
                 }
             }
         }
+
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>

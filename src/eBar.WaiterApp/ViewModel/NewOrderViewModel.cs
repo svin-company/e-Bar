@@ -11,8 +11,10 @@ namespace eBar.WaiterApp.ViewModel
         private readonly ITableService _tableService;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
+        private readonly IWaiterService _waiterService;
         public ObservableCollection<Table> Tables { get; set; }
         public ObservableCollection<Food> Foods { get; set; }
+        public ObservableCollection<Waiter> Waiters { get; set; }
         private Table _table;
         private Order _order;
 
@@ -41,17 +43,17 @@ namespace eBar.WaiterApp.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ConfirmCommand { get; }
 
-        public NewOrderViewModel(Order order, ITableService tableService, IFoodService foodService, IOrderService orderService)
+        public NewOrderViewModel(Order order, ITableService tableService, IFoodService foodService, IOrderService orderService, IWaiterService waiterService)
         {
             _foodService = foodService;
             _tableService = tableService;
             _orderService = orderService;
+            _waiterService = waiterService;
             Order = order;
             LoadTables();
             AddCommand = new AddToOrderCommand(Order, orderService);
             DeleteCommand = new DeleteItemCommand(Order, orderService);
             ConfirmCommand = new ConfirmCommand(Order, orderService, OnOrderConfirmed);
-
         }
 
         private async void LoadTables()
@@ -65,6 +67,10 @@ namespace eBar.WaiterApp.ViewModel
                 var foods = await _foodService.GetAllAsync();
                 Foods = new ObservableCollection<Food>(foods);
                 OnPropertyChanged(nameof(Foods));
+
+                var waiters = await _waiterService.GetAllAsync();
+                Waiters = new ObservableCollection<Waiter>(waiters);
+                OnPropertyChanged(nameof(Waiters));
             }
             catch (NoRecordsException ex)
             {
