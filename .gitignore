@@ -61,3 +61,6 @@ nunit-*.xml
 # CI/CD
 .env
 appsettings.json
+
+# .user files
+*.csproj.user

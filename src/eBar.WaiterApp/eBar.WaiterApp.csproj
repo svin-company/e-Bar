@@ -9,13 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\food.jpg" />
+    <ProjectReference Include="..\eBar.Core\eBar.Core.csproj" />
+    <ProjectReference Include="..\eBar.DataStorage\eBar.DataStorage.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\food.jpg">
+    <Resource Include="Images\food.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
 
 </Project>

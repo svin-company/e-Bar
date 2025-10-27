@@ -5,23 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:eBar.WaiterApp.Views.Home"
         mc:Ignorable="d"
-        Title="Главное окно" Height="450" Width="500">
-    
+        Title="HomeView" Height="450" Width="800">
     <StackPanel>
         <TextBlock Text="Приложение для официанта" 
-                   FontSize="30" 
-                   TextAlignment="Center" 
-                   Margin="30" />
+           FontSize="30" 
+           TextAlignment="Center" 
+           Margin="30" />
         <Button x:Name="newOrderButton" 
-                Content="Новый заказ" 
-                Margin="30" 
-                Padding="20"
-                FontSize="30" Click="NewOrderButton_Click"/>
+        Content="Новый заказ" 
+        Margin="30" 
+        Padding="20"
+        FontSize="30" Click="NewOrderButton_Click"/>
         <Button x:Name="ordersListButton" 
-                Content="Список заказов"  
-                Margin="30" 
-                Padding="20" 
-                FontSize="30" Click="OrdersListButton_Click"/>
+        Content="Список заказов"  
+        Margin="30" 
+        Padding="20" 
+        FontSize="30" Click="OrdersListButton_Click"/>
     </StackPanel>
-    
 </Window>
