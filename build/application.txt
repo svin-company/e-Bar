@@ -1,1 +1,2 @@
 ./src/eBar.WaiterApp/eBar.WaiterApp.csproj
+./src/eBar.KitchenDisplayApp/eBar.KitchenDisplayApp.csproj
