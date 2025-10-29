@@ -1,9 +1,10 @@
 ﻿using eBar.Core.Model;
+using eBar.WaiterApp.ViewModel;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace eBar.Core.ParameterConverter
+namespace eBar.WaiterApp.ParameterConverter
 {
     public class ConfirmParametersConverter : IMultiValueConverter
     {
@@ -11,7 +12,7 @@ namespace eBar.Core.ParameterConverter
         {
             return new ConfirmParameters
             {
-                Table = values[0] as Table,
+                Table = values[0] as TableViewModel,
                 Waiter = values[1] as Waiter,
             };
         }

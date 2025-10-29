@@ -1,16 +1,18 @@
 ﻿using eBar.Core.Model;
 using eBar.DataStorage.Services.Interfaces;
+using eBar.WaiterApp.Service;
+using eBar.WaiterApp.ViewModel;
 
 namespace eBar.WaiterApp.Commands
 {
     public class DeleteItemCommand : BaseCommand
     {
-        public Order Order { get; set; }
-        private readonly IOrderService _orderService;
+        public OrderViewModel Order { get; set; }
+        private readonly IOrderAppService _orderService;
 
-        public bool CanExecute(object parameter) => parameter is OrderItem;
+        public bool CanExecute(object parameter) => parameter is OrderItemViewModel;
 
-        public DeleteItemCommand(Order order, IOrderService orderService)
+        public DeleteItemCommand(OrderViewModel order, IOrderAppService orderService)
         {
             _orderService = orderService;
             Order = order;
@@ -18,7 +20,7 @@ namespace eBar.WaiterApp.Commands
 
         public override void Execute(object parameter)
         {
-            if (parameter is OrderItem orderItem)
+            if (parameter is OrderItemViewModel orderItem)
             {
                 _orderService.DeleteItem(Order, orderItem);
             }

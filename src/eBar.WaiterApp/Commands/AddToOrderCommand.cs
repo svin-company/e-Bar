@@ -1,26 +1,27 @@
 ﻿using eBar.Core.Model;
-using eBar.DataStorage.Services.Interfaces;
+using eBar.WaiterApp.Service;
+using eBar.WaiterApp.ViewModel;
 
 namespace eBar.WaiterApp.Commands
 {
     public class AddToOrderCommand : BaseCommand
     {
-        public Order Order { get; set; }
-        private readonly IOrderService _orderService;
+        public OrderViewModel Order { get; set; }
+        private readonly IOrderAppService _orderAppService;
 
         public bool CanExecute(object parameter) => parameter is Food;
 
-        public AddToOrderCommand(Order order, IOrderService orderService)
+        public AddToOrderCommand(OrderViewModel order, IOrderAppService orderAppService)
         {
             Order = order;
-            _orderService = orderService;
+            _orderAppService = orderAppService;
         }
 
         public override void Execute(object parameter)
         {
             if (parameter is Food food)
             {
-                _orderService.AddFood(Order, food);
+                _orderAppService.AddFood(Order, food);
             }
         }
     }

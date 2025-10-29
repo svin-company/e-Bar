@@ -10,12 +10,12 @@ namespace eBar.WaiterApp.ViewModel
 {
     public class OrderListViewModel : ViewModelBase
     {
-        public ObservableCollection<Table> Tables { get; set; }
+        public ObservableCollection<TableViewModel> Tables { get; set; }
         private readonly ITableService _tableService;
         private readonly IOrderService _orderService;
         private readonly IWaiterService _waiterService;
-        private Table _selectedTable;
-        public Table SelectedTable
+        private TableViewModel _selectedTable;
+        public TableViewModel SelectedTable
         {
             get => _selectedTable;
             set
@@ -25,8 +25,10 @@ namespace eBar.WaiterApp.ViewModel
                 LoadOrdersForSelectedTable();
             }
         }
-        private ObservableCollection<Order> _ordersForSelectedTable = new ObservableCollection<Order>();
-        public ObservableCollection<Order> OrdersForSelectedTable
+        private ObservableCollection<OrderViewModel> _ordersForSelectedTable = 
+            new ObservableCollection<OrderViewModel>();
+
+        public ObservableCollection<OrderViewModel> OrdersForSelectedTable
         {
             get => _ordersForSelectedTable;
             set
@@ -36,8 +38,8 @@ namespace eBar.WaiterApp.ViewModel
             }
         }
 
-        private Order _selectedOrder; 
-        public Order SelectedOrder 
+        private OrderViewModel _selectedOrder; 
+        public OrderViewModel SelectedOrder 
         { 
             get => _selectedOrder; 
             set 
@@ -58,10 +60,15 @@ namespace eBar.WaiterApp.ViewModel
                 {
                     var items = await _orderService.GetItemsByIdAsync(order.Id);
 
-                    order.OrderItems = new ObservableCollection<OrderItem>(items);
+                    order.OrderItems = items;
                     order.WaiterName = await _waiterService.GetByIdAsync(order.WaiterId);
                 }
-                OrdersForSelectedTable = new ObservableCollection<Order>(orders);
+                foreach (var item in orders)
+                {
+                    var orderVM = new OrderViewModel(item);
+                    OrdersForSelectedTable.Add(orderVM);
+                }
+                
             }
             catch (NoRecordsException ex)
             {
@@ -85,8 +92,13 @@ namespace eBar.WaiterApp.ViewModel
         {
             try
             {
+                Tables = new ObservableCollection<TableViewModel>();
                 var tables = await _tableService.GetAllAsync();
-                Tables = new ObservableCollection<Table>(tables);
+                foreach (var item in tables)
+                {
+                    var table = new TableViewModel(item);
+                    Tables.Add(table);
+                }
                 OnPropertyChanged(nameof(Tables));
             }
             catch (NoRecordsException ex)

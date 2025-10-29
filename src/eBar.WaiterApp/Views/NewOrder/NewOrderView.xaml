@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:eBar.WaiterApp.Views.NewOrder"
-        xmlns:converter="clr-namespace:eBar.Core.ParameterConverter;assembly=eBar.Core"
+        xmlns:converter="clr-namespace:eBar.WaiterApp.ParameterConverter"
         mc:Ignorable="d"
         Title="Новый заказ" Height="450" Width="800">
     <Window.Resources>

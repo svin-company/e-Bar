@@ -153,9 +153,10 @@ namespace eBar.DataStorage.Repositories
         {
             var connectionString = _configReader.GetConnectionString();
             var query = @"SELECT o.id,
-                o.order_time,
+                o.order_time AS orderTime,
                 o.status_id AS orderstatusid,
-                o.table_id,
+                o.table_id AS tableId,
+                o.waiter_id AS waiterId,
                 s.is_order_open AS isOrderOpen
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
@@ -170,7 +171,7 @@ namespace eBar.DataStorage.Repositories
         {
             var connectionString = _configReader.GetConnectionString();
             var query = @"SELECT o.id,
-                o.order_time,
+                o.order_time AS orderTime,
                 o.status_id AS orderstatusid,
                 o.table_id AS tableId,
                 o.waiter_id AS waiterId,
