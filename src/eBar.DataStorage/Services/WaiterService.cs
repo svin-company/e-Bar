@@ -23,7 +23,7 @@ namespace eBar.DataStorage.Services
             var waiters = await  _waiterRepository.GetAllAsync();
             if (!waiters.Any())
             {
-                throw new NoRecordsException($"Ошибка: таблица restaurant_table пустая");
+                throw new NoRecordsException($"Таблица restaurant_table пустая");
             }
             return waiters;
         }

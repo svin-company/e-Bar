@@ -22,21 +22,11 @@ namespace eBar.WaiterApp.ViewModel
             {
                 _selectedTable = value;
                 OnPropertyChanged(nameof(SelectedTable));
-                LoadOrdersForSelectedTable();
+                _ = LoadOrdersForSelectedTable();
             }
         }
-        private ObservableCollection<OrderViewModel> _ordersForSelectedTable = 
-            new ObservableCollection<OrderViewModel>();
 
-        public ObservableCollection<OrderViewModel> OrdersForSelectedTable
-        {
-            get => _ordersForSelectedTable;
-            set
-            {
-                _ordersForSelectedTable = value;
-                OnPropertyChanged(nameof(OrdersForSelectedTable));
-            }
-        }
+        public ObservableCollection<OrderViewModel> OrdersForSelectedTable { get; set; }
 
         private OrderViewModel _selectedOrder; 
         public OrderViewModel SelectedOrder 
@@ -49,12 +39,13 @@ namespace eBar.WaiterApp.ViewModel
             } 
         }
 
-        private async void LoadOrdersForSelectedTable()
+        private async Task LoadOrdersForSelectedTable()
         {
             if (SelectedTable == null) return;
 
             try
             {
+                OrdersForSelectedTable.Clear();
                 var orders = await _orderService.GetOrdersByTableIdAsync(SelectedTable.Id);
                 foreach (var order in orders)
                 {
@@ -84,6 +75,7 @@ namespace eBar.WaiterApp.ViewModel
             _tableService = tableService;
             _orderService = orderService;
             _waiterService = waiterService;
+            OrdersForSelectedTable = new ObservableCollection<OrderViewModel>();
             LoadTable();
             ChangeStatusCommand = new ChangeOrderStatusCommand(orderService);
         }
