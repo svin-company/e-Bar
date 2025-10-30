@@ -22,7 +22,7 @@ namespace eBar.DataStorage.Services
             var existingFood = await _foodRepository.GetAsync(name);
             if (existingFood != null)
             {
-                throw new EntityExistsException($"Ошибка добавления: Продукт с именем {name} уже существует");
+                throw new EntityExistsException($"Продукт с именем {name} уже существует");
             }
             return await _foodRepository.AddAsync(name, price);
         }
@@ -30,7 +30,7 @@ namespace eBar.DataStorage.Services
         public async Task DeleteAsync(string name)
         {
             var existingFood = await _foodRepository.GetAsync(name) ?? 
-                throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {name} не существует");
+                throw new EntityDoesNotExistException($"Продукта с именем {name} не существует");
             await _foodRepository.DeleteAsync(existingFood.Id);
         }
 
@@ -39,7 +39,7 @@ namespace eBar.DataStorage.Services
             var foods = await _foodRepository.GetAllAsync();
             if (foods.Count() ==0)
             {
-                throw new NoRecordsException($"Ошибка: таблица food пустая");
+                throw new NoRecordsException($"Таблица food пустая");
             }
             return foods.ToList();
         }
@@ -48,13 +48,13 @@ namespace eBar.DataStorage.Services
         {
             var existingFood = await _foodRepository.GetAsync(name);
             return existingFood ?? 
-                throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {name} не существует");
+                throw new EntityDoesNotExistException($"Продукта с именем {name} не существует");
         }
 
         public async Task UpdateAsync(string oldName, string newName)
         {
             var existingFood = await _foodRepository.GetAsync(oldName) ?? 
-                throw new EntityDoesNotExistException($"Ошибка удаления: Продукта с именем {oldName} не существует");
+                throw new EntityDoesNotExistException($"Продукта с именем {oldName} не существует");
             var food = new Food
             {
                 Id = existingFood.Id,
@@ -67,7 +67,7 @@ namespace eBar.DataStorage.Services
         public async Task UpdateAsync(string name, decimal newPrice)
         {
             var existingFood = await _foodRepository.GetAsync(name) ?? 
-                throw new EntityDoesNotExistException($"Ошибка изменения: Продукта с именем {name} не существует");
+                throw new EntityDoesNotExistException($"Продукта с именем {name} не существует");
             var food = new Food
             {
                 Id= existingFood.Id, 

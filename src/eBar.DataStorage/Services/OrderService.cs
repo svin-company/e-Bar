@@ -3,7 +3,6 @@ using eBar.DataStorage.Services.Interfaces;
 using eBar.Core.Model;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Net.Http;
 using System.Collections.Generic;
 
 namespace eBar.DataStorage.Services
@@ -19,59 +18,21 @@ namespace eBar.DataStorage.Services
             _orderItemRepository = orderItemRepository;
         }
 
-        public void AddFood(Order order, Food food)
-        {
-            if (order.OrderItems  != null)
-            {
-                var existingOrderItem = order.OrderItems
-                    .Where(x => x.Food.Name.Equals(food.Name))
-                    .FirstOrDefault();
-                if (existingOrderItem == null)
-                {
-                    var orderItem = new OrderItem
-                    {
-                        Id = 1,
-                        Food = food,
-                        Amount = 1
-                    };
-                    order.OrderItems.Add(orderItem);
-                }
-                else
-                {
-                    int amount = existingOrderItem.Amount++;
-                }
-            }
-            else
-            {
-                var orderItem = new OrderItem
-                {
-                    Id = 1, 
-                    Food = food,
-                    Amount = 1
-                };
-                order.OrderItems.Add(orderItem);
-            }
-        }
-
         public async Task<Order> UpdateStatusAsync(Order order)
         {
             order.IsOrderOpen = !order.IsOrderOpen;
             return await _orderRepository.ChangeStatusAsync(order, order.IsOrderOpen);
         }
 
-        public async Task<bool> AddOrderAsync(Order order, int tableId)
+        public async Task<bool> AddOrderAsync(Order order, int tableId, int waiterId)
         {
             if (order.OrderItems.Count == 0)
                 return false;
 
-            await _orderRepository.AddOrderWithItemsAsync(order, tableId);
+            await _orderRepository.AddOrderWithItemsAsync(order, tableId, waiterId);
             return true;
         }
 
-        public void DeleteItem(Order order, OrderItem orderItem)
-        {
-            order.OrderItems.Remove(orderItem);
-        }
 
         public async Task<List<Order>> GetOrdersByTableIdAsync(int id)
         {

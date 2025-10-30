@@ -6,6 +6,7 @@ using eBar.DataStorage.Services;
 using eBar.WaiterApp.ViewModel;
 using System.Windows;
 using eBar.Core.Model;
+using eBar.WaiterApp.Service;
 
 namespace eBar.WaiterApp.Views.NewOrder
 {
@@ -26,11 +27,20 @@ namespace eBar.WaiterApp.Views.NewOrder
             IOrderService orderService = new OrderService(orderRepository, orderItemRepository);
             IFoodService foodService = new FoodService(foodRepository);
 
+            IWaiterRepository waiterRepository = new WaiterRepository(reader);
+            IWaiterService waiterService = new WaiterService(waiterRepository);
+
+            IOrderAppService orderAppService = new OrderAppService();
+
             var order = new Order
             {
-                IsOrderOpen = true
+                IsOrderOpen = true,
+                OrderTime = DateTime.Now
             };
-            var newOrderViewModel = new NewOrderViewModel(order, tableService, foodService, orderService);
+
+            var newOrderViewModel = new NewOrderViewModel (new OrderViewModel(order), tableService, 
+                foodService, orderService, waiterService, orderAppService);
+
             newOrderViewModel.RequestClose += () =>
             {
                 this.Dispatcher.Invoke(() => this.Close());

@@ -6,10 +6,8 @@ namespace eBar.DataStorage.Services.Interfaces
 {
     public interface IOrderService
     {
-        public void AddFood(Order order, Food food);
         public Task<Order> UpdateStatusAsync(Order order);
-        public Task<bool> AddOrderAsync(Order order, int tableId);
-        public void DeleteItem(Order order, OrderItem orderItem);
+        public Task<bool> AddOrderAsync(Order order, int tableId, int waiterId);
         public Task<List<Order>> GetOrdersByTableIdAsync(int id);
         public  Task<Order> GetOrderByIdAsync(int id);
         public Task<List<OrderItem>> GetItemsByIdAsync(int id);

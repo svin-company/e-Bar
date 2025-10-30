@@ -4,6 +4,7 @@ using eBar.DataStorage.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using eBar.DataStorage.Exceptions;
+using eBar.WaiterApp.Service;
 namespace eBar.WaiterApp.ViewModel
 {
     public class NewOrderViewModel: ViewModelBase
@@ -11,23 +12,26 @@ namespace eBar.WaiterApp.ViewModel
         private readonly ITableService _tableService;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
-        public ObservableCollection<Table> Tables { get; set; }
+        private readonly IOrderAppService _orderAppService;
+        private readonly IWaiterService _waiterService;
+        public ObservableCollection<TableViewModel> Tables { get; set; }
         public ObservableCollection<Food> Foods { get; set; }
-        private Table _table;
-        private Order _order;
+        public ObservableCollection<Waiter> Waiters { get; set; }
+        private TableViewModel _table;
+        private OrderViewModel _order;
 
         public event Action RequestClose;
 
-        public Table Table
+        public TableViewModel Table
         {
             get => _table;
             set
             {
                 _table = value;
-                OnPropertyChanged(nameof(Table));
+                OnPropertyChanged(nameof(TableViewModel));
             }
         }
-        public Order Order
+        public OrderViewModel Order
         {
             get => _order;
             set
@@ -41,30 +45,41 @@ namespace eBar.WaiterApp.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ConfirmCommand { get; }
 
-        public NewOrderViewModel(Order order, ITableService tableService, IFoodService foodService, IOrderService orderService)
+        public NewOrderViewModel(OrderViewModel order, ITableService tableService, 
+            IFoodService foodService, IOrderService orderService, IWaiterService waiterService, IOrderAppService orderAppService)
         {
             _foodService = foodService;
             _tableService = tableService;
             _orderService = orderService;
+            _waiterService = waiterService;
+            _orderAppService = orderAppService;
             Order = order;
             LoadTables();
-            AddCommand = new AddToOrderCommand(Order, orderService);
-            DeleteCommand = new DeleteItemCommand(Order, orderService);
-            ConfirmCommand = new ConfirmCommand(Order, orderService, OnOrderConfirmed);
-
+            AddCommand = new AddToOrderCommand(Order, _orderAppService);
+            DeleteCommand = new DeleteItemCommand(Order, _orderAppService);
+            ConfirmCommand = new ConfirmCommand(Order, _orderService, OnOrderConfirmed);
         }
 
         private async void LoadTables()
         {
             try
             {
+                Tables = new ObservableCollection<TableViewModel>();
                 var tables = await _tableService.GetAllAsync();
-                Tables = new ObservableCollection<Table>(tables);
+                foreach (var item in tables)
+                {
+                    var table = new TableViewModel(item);
+                    Tables.Add(table);
+                }
                 OnPropertyChanged(nameof(Tables));
 
                 var foods = await _foodService.GetAllAsync();
                 Foods = new ObservableCollection<Food>(foods);
                 OnPropertyChanged(nameof(Foods));
+
+                var waiters = await _waiterService.GetAllAsync();
+                Waiters = new ObservableCollection<Waiter>(waiters);
+                OnPropertyChanged(nameof(Waiters));
             }
             catch (NoRecordsException ex)
             {

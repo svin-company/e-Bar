@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:eBar.WaiterApp.Views.Home"
         mc:Ignorable="d"
-        Title="HomeView" Height="450" Width="800">
+        Title="WaiterApp" Height="450" Width="800">
     <StackPanel>
         <TextBlock Text="Приложение для официанта" 
            FontSize="30" 

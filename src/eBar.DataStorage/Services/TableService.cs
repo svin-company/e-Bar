@@ -22,7 +22,7 @@ namespace eBar.DataStorage.Services
             var tables = await _tableRepository.GetAllAsync();
             if (tables.Count() == 0)
             {
-                throw new NoRecordsException($"Ошибка: таблица restaurant_table пустая");
+                throw new NoRecordsException($"Таблица restaurant_table пустая");
             }
             return tables;
         }
