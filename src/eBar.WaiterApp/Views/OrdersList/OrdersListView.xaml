@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:eBar.WaiterApp.Views.OrdersList"
         mc:Ignorable="d"
-        Title="OrderList" Height="450" Width="800">
+        Title="Список заказов" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -32,8 +32,8 @@ Margin="5"
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
@@ -44,29 +44,30 @@ Margin="5"
           SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}" Width="80"/>
-                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding OrderTime, StringFormat ='dd/MM/yyyy'}" Width="120"/>
+                            <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding OrderTime, StringFormat ='dd/MM/yyyy'}" Width="80"/>
+                            <GridViewColumn Header="Официант" DisplayMemberBinding="{Binding WaiterName}" Width ="120"/>
                             <GridViewColumn Header="Статус" Width="80">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock>
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="Неизвестно"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsOrderOpen}" Value="True">
-                                                            <Setter Property="Text" Value="Открыт"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding IsOrderOpen}" Value="False">
-                                                            <Setter Property="Text" Value="Закрыт"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="Неизвестно"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOrderOpen}" Value="True">
+                                                        <Setter Property="Text" Value="Открыт"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsOrderOpen}" Value="False">
+                                                        <Setter Property="Text" Value="Закрыт"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>

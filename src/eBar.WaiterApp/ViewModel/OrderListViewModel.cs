@@ -10,33 +10,26 @@ namespace eBar.WaiterApp.ViewModel
 {
     public class OrderListViewModel : ViewModelBase
     {
-        public ObservableCollection<Table> Tables { get; set; }
+        public ObservableCollection<TableViewModel> Tables { get; set; }
         private readonly ITableService _tableService;
         private readonly IOrderService _orderService;
-        private Table _selectedTable;
-        public Table SelectedTable
+        private readonly IWaiterService _waiterService;
+        private TableViewModel _selectedTable;
+        public TableViewModel SelectedTable
         {
             get => _selectedTable;
             set
             {
                 _selectedTable = value;
                 OnPropertyChanged(nameof(SelectedTable));
-                LoadOrdersForSelectedTable();
-            }
-        }
-        private ObservableCollection<Order> _ordersForSelectedTable = new ObservableCollection<Order>();
-        public ObservableCollection<Order> OrdersForSelectedTable
-        {
-            get => _ordersForSelectedTable;
-            set
-            {
-                _ordersForSelectedTable = value;
-                OnPropertyChanged(nameof(OrdersForSelectedTable));
+                _ = LoadOrdersForSelectedTable();
             }
         }
 
-        private Order _selectedOrder; 
-        public Order SelectedOrder 
+        public ObservableCollection<OrderViewModel> OrdersForSelectedTable { get; set; }
+
+        private OrderViewModel _selectedOrder; 
+        public OrderViewModel SelectedOrder 
         { 
             get => _selectedOrder; 
             set 
@@ -46,19 +39,27 @@ namespace eBar.WaiterApp.ViewModel
             } 
         }
 
-        private async void LoadOrdersForSelectedTable()
+        private async Task LoadOrdersForSelectedTable()
         {
             if (SelectedTable == null) return;
 
             try
             {
+                OrdersForSelectedTable.Clear();
                 var orders = await _orderService.GetOrdersByTableIdAsync(SelectedTable.Id);
                 foreach (var order in orders)
                 {
                     var items = await _orderService.GetItemsByIdAsync(order.Id);
-                    order.OrderItems = new ObservableCollection<OrderItem>(items);
+
+                    order.OrderItems = items;
+                    order.WaiterName = await _waiterService.GetByIdAsync(order.WaiterId);
                 }
-                OrdersForSelectedTable = new ObservableCollection<Order>(orders);
+                foreach (var item in orders)
+                {
+                    var orderVM = new OrderViewModel(item);
+                    OrdersForSelectedTable.Add(orderVM);
+                }
+                
             }
             catch (NoRecordsException ex)
             {
@@ -69,10 +70,12 @@ namespace eBar.WaiterApp.ViewModel
 
         public ICommand ChangeStatusCommand { get; }
 
-        public OrderListViewModel(ITableService tableService, IOrderService orderService)
+        public OrderListViewModel(ITableService tableService, IOrderService orderService, IWaiterService waiterService)
         {
             _tableService = tableService;
             _orderService = orderService;
+            _waiterService = waiterService;
+            OrdersForSelectedTable = new ObservableCollection<OrderViewModel>();
             LoadTable();
             ChangeStatusCommand = new ChangeOrderStatusCommand(orderService);
         }
@@ -81,8 +84,13 @@ namespace eBar.WaiterApp.ViewModel
         {
             try
             {
+                Tables = new ObservableCollection<TableViewModel>();
                 var tables = await _tableService.GetAllAsync();
-                Tables = new ObservableCollection<Table>(tables);
+                foreach (var item in tables)
+                {
+                    var table = new TableViewModel(item);
+                    Tables.Add(table);
+                }
                 OnPropertyChanged(nameof(Tables));
             }
             catch (NoRecordsException ex)

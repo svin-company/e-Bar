@@ -16,13 +16,15 @@ namespace eBar.WaiterApp.Views.OrdersList
             var reader = new ConfigReader();
 
             ITableRepository tableRepository = new TableRepository(reader);
+            IWaiterRepository waiterRepository = new WaiterRepository(reader);
             ITableService tableService = new TableService(tableRepository);
+            IWaiterService waiterService = new WaiterService(waiterRepository);
 
             IOrderItemRepository orderItemRepository = new OrderItemRepository(reader);
             IOrderRepository orderRepository = new OrderRepository(reader);
             IOrderService orderService = new OrderService(orderRepository, orderItemRepository);
 
-            DataContext = new OrderListViewModel(tableService, orderService);
+            DataContext = new OrderListViewModel(tableService, orderService, waiterService);
             InitializeComponent();
         }
     }

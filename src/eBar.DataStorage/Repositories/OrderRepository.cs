@@ -22,25 +22,11 @@ namespace eBar.DataStorage.Repositories
             _configReader = configReader;
         }
 
-        public async Task<int> AddAsync(int orderStatusId, int tableId)
-        {
-            var connectionString = _configReader.GetConnectionString();
-            DateTime orderTime = DateTime.Now;
-            var query = @"INSERT INTO public.restaurant_order (order_time, order_status_id, restaurant_table_id)
-                    VALUES (@orderTime, @orderStatusId, @tableId)
-                    RETURNING id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
-            {
-                return await connection.ExecuteScalarAsync<int>(query, new { orderTime, orderStatusId, tableId });
-            }
-        }
-
-
         public async Task<int> AddAsync(Order order)
         {
             var connectionString = _configReader.GetConnectionString();
-            var query = @"INSERT INTO public.restaurant_order (order_time, order_status_id, restaurant_table_id)
-                    VALUES (@orderTime, @orderStatusId, @tableId)
+            var query = @"INSERT INTO public.restaurant_order (order_time, order_status_id, restaurant_table_id, waiter_id)
+                    VALUES (@orderTime, @orderStatusId, @tableId, @waiterId)
                     RETURNING id;";
             await using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -74,14 +60,14 @@ namespace eBar.DataStorage.Repositories
             }
         }
 
-        public async Task AddOrderWithItemsAsync(Order order, int tableId)
+        public async Task AddOrderWithItemsAsync(Order order, int tableId, int waiterId)
         {
             var statusQuery = @"SELECT id FROM public.order_status 
                 WHERE is_order_open = @IsOrderOpen 
                 LIMIT 1";
 
-            var orderQuery = @"INSERT INTO public.restaurant_order (order_time, status_id, table_id)
-                VALUES (@OrderTime, @OrderStatusId, @TableId)
+            var orderQuery = @"INSERT INTO public.restaurant_order (order_time, status_id, table_id, waiter_id)
+                VALUES (@OrderTime, @OrderStatusId, @TableId, @WaiterId)
                 RETURNING id;";
 
             var orderItemQuery = @"INSERT INTO public.order_item (amount, food_id, restaurant_order_id) 
@@ -100,7 +86,8 @@ namespace eBar.DataStorage.Repositories
                     new { 
                         OrderTime = order.OrderTime, 
                         OrderStatusId = statusid, 
-                        TableId = tableId 
+                        TableId = tableId,
+                        WaiterId = waiterId
                     }, transaction);
 
                 order.Id = orderId;
@@ -166,9 +153,10 @@ namespace eBar.DataStorage.Repositories
         {
             var connectionString = _configReader.GetConnectionString();
             var query = @"SELECT o.id,
-                o.order_time,
+                o.order_time AS orderTime,
                 o.status_id AS orderstatusid,
-                o.table_id,
+                o.table_id AS tableId,
+                o.waiter_id AS waiterId,
                 s.is_order_open AS isOrderOpen
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
@@ -183,16 +171,18 @@ namespace eBar.DataStorage.Repositories
         {
             var connectionString = _configReader.GetConnectionString();
             var query = @"SELECT o.id,
-                o.order_time,
+                o.order_time AS orderTime,
                 o.status_id AS orderstatusid,
-                o.table_id,
+                o.table_id AS tableId,
+                o.waiter_id AS waiterId,
                 s.is_order_open AS isOrderOpen
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
                 WHERE o.table_id = @id;";
             await using (var connection = new NpgsqlConnection(connectionString))
             {
-                return await connection.QueryAsync<Order>(query, new { id });
+                var order = await connection.QueryAsync<Order>(query, new { id });
+                return order;
             }
         }
         public async Task<IEnumerable<OrderItem>> GetOrderItemsAsync(int orderId)
