@@ -1,5 +1,4 @@
-﻿using eBar.DataStorage.Reader;
-using eBar.DataStorage.Repositories.Interfaces;
+﻿using eBar.DataStorage.Repositories.Interfaces;
 using eBar.Core.Model;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -10,17 +9,17 @@ namespace eBar.DataStorage.Repositories
 {
     public class OrderItemRepository : IOrderItemRepository
     {
-        private readonly IConfigReader _configReader;
+        private readonly DbConfigReader _dbConfigReader;
 
-        public OrderItemRepository(IConfigReader configReader)
+        public OrderItemRepository(DbConfigReader dbConfigReader)
         {
-            _configReader = configReader;
+            _dbConfigReader = dbConfigReader;
         }
 
       
         public async Task<IEnumerable<OrderItem>> GetAllAsync()
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.order_item";
             await using (var connection = new NpgsqlConnection(connectionString))
             {

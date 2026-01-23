@@ -1,5 +1,4 @@
-﻿using eBar.DataStorage.Reader;
-using eBar.DataStorage.Repositories.Interfaces;
+﻿using eBar.DataStorage.Repositories.Interfaces;
 using eBar.Core.Model;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -10,16 +9,16 @@ namespace eBar.DataStorage.Repositories
 {
     public class OrderStatusRepository : IOrderStatusRepository
     {
-        private readonly IConfigReader _configReader;
+        private readonly DbConfigReader _dbConfigReader;
 
-        public OrderStatusRepository(IConfigReader configReader)
+        public OrderStatusRepository(DbConfigReader dbConfigReader)
         {
-            _configReader = configReader;
+            _dbConfigReader = dbConfigReader;
         }
 
         public async Task<int> AddAsync(string name)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"INSERT INTO public.order_status (name)
                     VALUES (@Name)
                     RETURNING id;";
@@ -31,7 +30,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task UpdateAsync(OrderStatus status)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"UPDATE public.order_status
                 SET name = @Name
                 WHERE id =@Id;";
@@ -43,7 +42,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"DELETE from public.order_status
                 WHERE id =@id;";
             await using (var connection = new NpgsqlConnection(connectionString))
@@ -54,7 +53,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<OrderStatus> GetAsync(string name)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT * FROM public.order_status
                 WHERE name = @Name";
             await using (var connection = new NpgsqlConnection(connectionString))
@@ -65,9 +64,9 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<IEnumerable<OrderStatus>> GetAllAsync()
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.order_status";
-            await using (var connection = new NpgsqlConnection(_configReader.GetConnectionString()))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QueryAsync<OrderStatus>(query);
             }

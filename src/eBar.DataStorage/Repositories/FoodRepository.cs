@@ -1,6 +1,6 @@
 ﻿using Dapper;
+using eBar.Configuration;
 using eBar.Core.Model;
-using eBar.DataStorage.Reader;
 using eBar.DataStorage.Repositories.Interfaces;
 using Npgsql;
 using System.Collections.Generic;
@@ -10,16 +10,16 @@ namespace eBar.DataStorage.Repositories
 {
     public class FoodRepository : IFoodRepository
     {
-        private readonly IConfigReader _configReader;
+        private readonly DbConfigReader _dbConfigReader;
 
-        public FoodRepository(IConfigReader configReader)
+        public FoodRepository(DbConfigReader dbConfigReader)
         {
-            _configReader = configReader;
+            _dbConfigReader = dbConfigReader;
         }
 
         public async Task<int> AddAsync(string name, decimal price)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"INSERT INTO public.food (name, price)
                     VALUES (@Name, @Price)
                     RETURNING id;";
@@ -31,7 +31,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task UpdateAsync(Food food)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"UPDATE public.food
                 SET name = @Name, price =@Price 
                 WHERE id =@Id;";
@@ -43,7 +43,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"DELETE from public.food
                 WHERE id =@id;";
             await using (var connection = new NpgsqlConnection(connectionString))
@@ -54,7 +54,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<Food> GetAsync(string name)
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT * FROM public.food
                 WHERE name = @Name";
             await using (var connection = new NpgsqlConnection(connectionString))
@@ -65,7 +65,7 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<IEnumerable<Food>> GetAllAsync()
         {
-            var connectionString = _configReader.GetConnectionString();
+            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.food";
             await using (var connection = new NpgsqlConnection(connectionString))
             {

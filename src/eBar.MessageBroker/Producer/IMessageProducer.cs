@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace eBar.MessageBroker.MessageProducer
+namespace eBar.MessageBroker.Producer
 {
     public interface IMessageProducer
     {

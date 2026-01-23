@@ -1,12 +1,13 @@
 ﻿using Kitchen=eBar.Core.Kitchen;
-using RMQ = eBar.MessageBroker.Reader;
-using eBar.MessageBroker.MessageConsumer;
-using eBar.MessageBroker.MessageProducer;
+using eBar.Configuration;
+using eBar.MessageBroker.Consumer;
+using eBar.MessageBroker.Producer;
 using Moq;
 using eBar.DataStorage.Repositories.Interfaces;
 using eBar.DataStorage.Services;
 using Waiter = eBar.Core.Model;
-using System.Threading.Tasks;
+using eBar.MessageBroker;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eBar.UnitTests;
 
@@ -36,12 +37,19 @@ public class Tests
     [Test]
     public async Task Broker_Test()
     {
+        // Не особо корректное использование тестов, наверное, но мне надо было проверить работу RabbitMQ
         string testMessage = "Hello";
-        var config = new RMQ.ConfigReader();
-        IMessageConsumer consumer = new MessageConsumer(config);
-        var consumerTask = consumer.GetMessageAsync("ebarTest");
 
-        MessageProducer messageProducer = new(config);
+        IServiceCollection services = new ServiceCollection();
+        services.AddConfiguration();
+        services.AddRabbitMq();
+        var serviceProvider = services.BuildServiceProvider();
+
+        var messageConsumer = serviceProvider.GetRequiredService<IMessageConsumer>();
+        var messageProducer = serviceProvider.GetRequiredService<IMessageProducer>();
+
+        var consumerTask = messageConsumer.GetMessageAsync("ebarTest");
+
         await messageProducer.SendMessageAsync("ebarExchange", "ebarTest", "qwerty", testMessage);
 
         Assert.That(testMessage, Is.EqualTo(await consumerTask));

@@ -6,21 +6,23 @@ namespace eBar.WaiterApp.Views.Home
 {
     public partial class HomeView : Window
     {
-        public HomeView()
+        private readonly NewOrderView _newOrderView;
+        private readonly OrdersListView _ordersListView;
+        public HomeView(NewOrderView newOrderView, OrdersListView ordersListView)
         {
+            _newOrderView = newOrderView;
+            _ordersListView = ordersListView;
             InitializeComponent();
         }
 
         private void NewOrderButton_Click(object sender, RoutedEventArgs e)
-        {
-            var newOrderView = new NewOrderView();
-            newOrderView.ShowDialog();
+        { 
+            _newOrderView.ShowDialog();
         }
 
         private void OrdersListButton_Click(object sender, RoutedEventArgs e)
         {
-            var ordersListView = new OrdersListView();
-            ordersListView.ShowDialog();
+            _ordersListView.ShowDialog();
         }
     }
 }

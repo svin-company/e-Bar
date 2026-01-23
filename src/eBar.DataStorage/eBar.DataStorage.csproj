@@ -16,13 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eBar.ConfigReader\eBar.Configuration.csproj" />
     <ProjectReference Include="..\eBar.Core\eBar.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

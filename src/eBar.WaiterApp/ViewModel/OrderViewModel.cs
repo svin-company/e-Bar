@@ -30,7 +30,7 @@ namespace eBar.WaiterApp.ViewModel
 
         public OrderViewModel(Order order)
         {
-            this.Order = order;
+            Order = order;
             ObservableCollection<OrderItemViewModel> orderViewModels = new();
             OrderItems = [];
 

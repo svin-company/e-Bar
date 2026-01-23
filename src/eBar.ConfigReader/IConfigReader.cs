@@ -1,6 +1,6 @@
-﻿namespace eBar.ConfigReader;
+﻿namespace eBar.Configuration;
 
-public interface IConfigReader
+public interface IConfigReader 
 {
-    
+    public T? GetConfigValue<T>(string section);
 }

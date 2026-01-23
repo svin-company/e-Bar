@@ -1,11 +1,12 @@
-﻿using eBar.MessageBroker.Reader;
+﻿using eBar.Configuration;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
+using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace eBar.MessageBroker.MessageProducer
+namespace eBar.MessageBroker.Producer
 {
     public class MessageProducer: IMessageProducer
     {
@@ -19,8 +20,8 @@ namespace eBar.MessageBroker.MessageProducer
         public async Task SendMessageAsync(string exchangeName, string queueName, string key, string message)
         {
             var connectionFactory = new ConnectionFactory();
-            var section = _configReader.GetConnectionSettings();
-            section.Bind(connectionFactory);
+            var configValue = _configReader.GetConfigValue<string>("MessageBroker:MessageBrokerConnection");
+            connectionFactory.Uri = new Uri(configValue);
             await using var connection = await connectionFactory.CreateConnectionAsync();
             await using var channel = await connection.CreateChannelAsync();
             await channel.QueueDeclareAsync(queueName,
