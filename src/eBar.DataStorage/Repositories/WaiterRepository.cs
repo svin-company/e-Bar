@@ -19,9 +19,8 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<IEnumerable<Waiter>> GetAllAsync()
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.waiter";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QueryAsync<Waiter>(query);
             }
@@ -29,10 +28,9 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<string> GetByIdAsync(int waiterId)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT name from public. waiter
                 WHERE id = @Id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.ExecuteScalarAsync<string>(query, new { Id = waiterId });
             }

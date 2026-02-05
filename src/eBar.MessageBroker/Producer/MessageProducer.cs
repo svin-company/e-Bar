@@ -10,18 +10,19 @@ namespace eBar.MessageBroker.Producer
 {
     public class MessageProducer: IMessageProducer
     {
-        private readonly IConfigReader _configReader;
+        private readonly RMQConfigReader _configReader;
 
-        public MessageProducer(IConfigReader configReader)
+        public MessageProducer(RMQConfigReader configReader)
         {
             _configReader = configReader;
         }
 
         public async Task SendMessageAsync(string exchangeName, string queueName, string key, string message)
         {
-            var connectionFactory = new ConnectionFactory();
-            var configValue = _configReader.GetConfigValue<string>("MessageBroker:MessageBrokerConnection");
-            connectionFactory.Uri = new Uri(configValue);
+            var connectionFactory = new ConnectionFactory
+            {
+                Uri = new Uri(_configReader.Connection)
+            };
             await using var connection = await connectionFactory.CreateConnectionAsync();
             await using var channel = await connection.CreateChannelAsync();
             await channel.QueueDeclareAsync(queueName,

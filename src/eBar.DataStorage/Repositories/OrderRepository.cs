@@ -23,11 +23,10 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<int> AddAsync(Order order)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"INSERT INTO public.restaurant_order (order_time, order_status_id, restaurant_table_id, waiter_id)
                     VALUES (@orderTime, @orderStatusId, @tableId, @waiterId)
                     RETURNING id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.ExecuteScalarAsync<int>(query, order);
             }
@@ -35,13 +34,12 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<Order> ChangeStatusAsync(Order order, bool orderStatus)
         {
-            var connectionString = _dbConfigReader.Connection;
             int statusId = await GetStatusId(orderStatus);
 
             var updateQuery = @"UPDATE public.restaurant_order
                 SET status_id = @statusId
                 WHERE id =@Id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 await connection.ExecuteAsync(updateQuery, new { Id = order.Id, statusId = statusId });
             }
@@ -50,10 +48,9 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<int> GetStatusId(bool orderStatus)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT id FROM public.order_status
                     WHERE is_order_open = @orderStatus;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.ExecuteScalarAsync<int>(query, new {orderStatus});
             }
@@ -118,10 +115,9 @@ namespace eBar.DataStorage.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"DELETE from public.restaurant_order
                 WHERE id =@id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 await connection.ExecuteAsync(query, new { id });
             }
@@ -129,9 +125,8 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.restaurant_order";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QueryAsync<Order>(query);
             }
@@ -139,10 +134,9 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<Order> GetByOrderIdAsync(int id)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT * FROM public.restaurant_order
                 WHERE id = @Id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QuerySingleOrDefaultAsync<Order>(query, new { id });
             }
@@ -150,7 +144,6 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<Order> GetByOrderIdWithStatus(int id)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT o.id,
                 o.order_time AS orderTime,
                 o.status_id AS orderstatusid,
@@ -160,7 +153,7 @@ namespace eBar.DataStorage.Repositories
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
                 WHERE o.id = @id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QuerySingleOrDefaultAsync<Order>(query, new { id });
             }
@@ -168,7 +161,6 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<IEnumerable<Order>> GetByTableIdAsync(int id)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT o.id,
                 o.order_time AS orderTime,
                 o.status_id AS orderstatusid,
@@ -178,7 +170,7 @@ namespace eBar.DataStorage.Repositories
                 FROM public.restaurant_order o
                 JOIN public.order_status s ON o.status_id = s.id
                 WHERE o.table_id = @id;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 var order = await connection.QueryAsync<Order>(query, new { id });
                 return order;
@@ -186,7 +178,6 @@ namespace eBar.DataStorage.Repositories
         }
         public async Task<IEnumerable<OrderItem>> GetOrderItemsAsync(int orderId)
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = @"SELECT 
                 i.id AS order_item_id,
                 i.amount AS Amount,
@@ -198,7 +189,7 @@ namespace eBar.DataStorage.Repositories
                 FROM public.order_item i
                 JOIN public.food f ON i.food_id = f.id
                 WHERE i.restaurant_order_id = @orderId;";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 var result = await connection.QueryAsync<OrderItem, Food, OrderItem>(
                     query,

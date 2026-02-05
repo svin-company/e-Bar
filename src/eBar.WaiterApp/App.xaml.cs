@@ -33,18 +33,9 @@ namespace eBar.WaiterApp
                     services.AddTransient<OrderViewModel>();
                     services.AddConfiguration();
                     services.AddTransient<DbConfigReader>();
-                    services.AddTransient<ITableRepository, TableRepository>();
-                    services.AddTransient<IFoodRepository, FoodRepository>();
-                    services.AddTransient<IOrderItemRepository, OrderItemRepository>();
-                    services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
-                    services.AddTransient<IOrderRepository, OrderRepository>();
-                    services.AddTransient<IWaiterRepository, WaiterRepository>();
-                    services.AddTransient<IFoodService, FoodService>();
-                    services.AddTransient<IOrderService, OrderService>();
-                    services.AddTransient<ITableService, TableService>();
-                    services.AddTransient<IWaiterService, WaiterService>();
+                    services.AddRepositories();
+                    services.AddServices();
                     services.AddTransient<IOrderAppService, OrderAppService>();
-
                 })
                 .Build();
         }

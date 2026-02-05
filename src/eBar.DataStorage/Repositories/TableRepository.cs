@@ -18,9 +18,8 @@ namespace eBar.DataStorage.Repositories
 
         public async Task<IEnumerable<Table>> GetAllAsync()
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.restaurant_table";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QueryAsync<Table>(query);
             }

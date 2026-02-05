@@ -19,9 +19,8 @@ namespace eBar.DataStorage.Repositories
       
         public async Task<IEnumerable<OrderItem>> GetAllAsync()
         {
-            var connectionString = _dbConfigReader.Connection;
             var query = "SELECT * FROM public.order_item";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QueryAsync<OrderItem>(query);
             }

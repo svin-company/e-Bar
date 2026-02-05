@@ -9,7 +9,7 @@ namespace eBar.MessageBroker
         {
             services.AddSingleton<IMessageProducer, MessageProducer>();
             services.AddSingleton<IMessageConsumer, MessageConsumer>();
-
+            services.AddTransient<RMQConfigReader>();
             return services;
         }
     }
