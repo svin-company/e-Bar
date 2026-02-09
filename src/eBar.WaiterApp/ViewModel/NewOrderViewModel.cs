@@ -45,7 +45,7 @@ namespace eBar.WaiterApp.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ConfirmCommand { get; }
 
-        public NewOrderViewModel(OrderViewModel order, ITableService tableService, 
+        public NewOrderViewModel(ITableService tableService, 
             IFoodService foodService, IOrderService orderService, IWaiterService waiterService, IOrderAppService orderAppService)
         {
             _foodService = foodService;
@@ -53,7 +53,12 @@ namespace eBar.WaiterApp.ViewModel
             _orderService = orderService;
             _waiterService = waiterService;
             _orderAppService = orderAppService;
-            Order = order;
+            var order = new Order
+            {
+                IsOrderOpen = true,
+                OrderTime = DateTime.Now
+            };
+            Order = new OrderViewModel(order);
             LoadTables();
             AddCommand = new AddToOrderCommand(Order, _orderAppService);
             DeleteCommand = new DeleteItemCommand(Order, _orderAppService);

@@ -1,5 +1,4 @@
-﻿using eBar.DataStorage.Reader;
-using eBar.Core.Model;
+﻿using eBar.Core.Model;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using eBar.DataStorage.Repositories.Interfaces;
@@ -10,18 +9,17 @@ namespace eBar.DataStorage.Repositories
 {
     public class TableRepository: ITableRepository
     {
-        private readonly IConfigReader _configReader;
+        private readonly DbConfigReader _dbConfigReader;
 
-        public TableRepository(IConfigReader configReader)
+        public TableRepository(DbConfigReader dbConfigReader)
         {
-            _configReader = configReader;
+            _dbConfigReader = dbConfigReader;
         }
 
         public async Task<IEnumerable<Table>> GetAllAsync()
         {
-            var connectionString = _configReader.GetConnectionString();
             var query = "SELECT * FROM public.restaurant_table";
-            await using (var connection = new NpgsqlConnection(connectionString))
+            await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 return await connection.QueryAsync<Table>(query);
             }

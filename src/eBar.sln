@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9D25732E-199A-47F3-BD3F-A39AFFAA3874}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.WaiterApp", "eBar.WaiterApp\eBar.WaiterApp.csproj", "{8CF48119-2F72-4EB9-B29D-1CF0FE435D26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.KitchenDisplayApp", "eBar.KitchenDisplayApp\eBar.KitchenDisplayApp.csproj", "{388393A0-324F-4EF6-B2DD-CD034FFAB4E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBar.Configuration", "eBar.ConfigReader\eBar.Configuration.csproj", "{DF647EBA-1F23-C0A5-6716-951415ACD2EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{388393A0-324F-4EF6-B2DD-CD034FFAB4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{388393A0-324F-4EF6-B2DD-CD034FFAB4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{388393A0-324F-4EF6-B2DD-CD034FFAB4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF647EBA-1F23-C0A5-6716-951415ACD2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF647EBA-1F23-C0A5-6716-951415ACD2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF647EBA-1F23-C0A5-6716-951415ACD2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF647EBA-1F23-C0A5-6716-951415ACD2EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{86698383-AE40-40A1-AC1D-9C02879D0093} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
 		{8CF48119-2F72-4EB9-B29D-1CF0FE435D26} = {6B6EEE38-107F-423D-A45F-B074DFFD40C8}
 		{388393A0-324F-4EF6-B2DD-CD034FFAB4E8} = {6B6EEE38-107F-423D-A45F-B074DFFD40C8}
+		{DF647EBA-1F23-C0A5-6716-951415ACD2EE} = {9D25732E-199A-47F3-BD3F-A39AFFAA3874}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A92639DD-0F34-4546-A5BE-06B8CC9861EB}

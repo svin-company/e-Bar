@@ -1,26 +1,27 @@
-﻿using eBar.MessageBroker.Reader;
-using Microsoft.Extensions.Configuration;
+﻿using eBar.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eBar.MessageBroker.MessageConsumer
+namespace eBar.MessageBroker.Consumer
 {
     public class MessageConsumer : IMessageConsumer
     {
-        private readonly IConfigReader _configReader;
+        private readonly RMQConfigReader _configReader;
 
-        public MessageConsumer(IConfigReader configReader)
+        public MessageConsumer(RMQConfigReader configReader)
         {
             _configReader = configReader;
         }
 
         public async Task<string> GetMessageAsync(string queueName)
         {
-            var connectionFactory = new ConnectionFactory();
-            var section = _configReader.GetConnectionSettings();
-            section.Bind(connectionFactory);
+            var connectionFactory = new ConnectionFactory
+            {
+                Uri = new Uri(_configReader.Connection)
+            };
 
             await using var connection = await connectionFactory.CreateConnectionAsync();
             await using var channel = await connection.CreateChannelAsync();
