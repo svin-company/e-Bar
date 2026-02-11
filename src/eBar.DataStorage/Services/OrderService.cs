@@ -49,5 +49,18 @@ namespace eBar.DataStorage.Services
             var items = await _orderRepository.GetOrderItemsAsync(id);
             return items.ToList();
         }
+
+        public async Task<bool> DeleteOrderAsync(Order order)
+        {
+            if (order == null)
+                return false;
+
+            var selectedOrder = await _orderRepository.GetByOrderIdAsync(order.Id);
+
+            if (selectedOrder != null)
+                return await _orderRepository.DeleteAsync(selectedOrder.Id);
+
+            return false;
+        }
     }
 }

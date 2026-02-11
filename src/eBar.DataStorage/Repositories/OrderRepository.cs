@@ -113,14 +113,19 @@ namespace eBar.DataStorage.Repositories
 
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task <bool> DeleteAsync(int id)
         {
             var query = @"DELETE from public.restaurant_order
                 WHERE id =@id;";
+            int result = 0;
             await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
-                await connection.ExecuteAsync(query, new { id });
+                result = await connection.ExecuteAsync(query, new { id });
             }
+            if (result >= 0)
+                return true;
+
+            return false;
         }
 
         public async Task<IEnumerable<Order>> GetAll()

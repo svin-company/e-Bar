@@ -11,5 +11,6 @@ namespace eBar.DataStorage.Services.Interfaces
         public Task<List<Order>> GetOrdersByTableIdAsync(int id);
         public  Task<Order> GetOrderByIdAsync(int id);
         public Task<List<OrderItem>> GetItemsByIdAsync(int id);
+        public Task<bool> DeleteOrderAsync(Order order);
     }
 }

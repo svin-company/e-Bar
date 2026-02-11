@@ -69,6 +69,7 @@ namespace eBar.WaiterApp.ViewModel
         }
 
         public ICommand ChangeStatusCommand { get; }
+        public ICommand DeleteOrderCommand { get; }
 
         public OrderListViewModel(ITableService tableService, IOrderService orderService, IWaiterService waiterService)
         {
@@ -78,6 +79,7 @@ namespace eBar.WaiterApp.ViewModel
             OrdersForSelectedTable = new ObservableCollection<OrderViewModel>();
             LoadTable();
             ChangeStatusCommand = new ChangeOrderStatusCommand(orderService);
+            DeleteOrderCommand = new DeleteOrderCommand(orderService);
         }
 
         private async void LoadTable()
