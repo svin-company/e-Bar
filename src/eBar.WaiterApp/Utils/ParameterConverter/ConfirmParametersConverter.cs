@@ -13,7 +13,7 @@ namespace eBar.WaiterApp.ParameterConverter
             return new ConfirmParameters
             {
                 Table = values[0] as TableViewModel,
-                Waiter = values[1] as Waiter,
+                Waiter = values[1] as Waiter
             };
         }
 

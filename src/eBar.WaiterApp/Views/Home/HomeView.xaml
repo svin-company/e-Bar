@@ -12,14 +12,16 @@
            TextAlignment="Center" 
            Margin="30" />
         <Button x:Name="newOrderButton" 
-        Content="Новый заказ" 
+        Content="Новый заказ"
+        Command="{Binding DataContext.CreateNewOrderCommand, RelativeSource={RelativeSource AncestorType=Window}}"
         Margin="30" 
         Padding="20"
-        FontSize="30" Click="NewOrderButton_Click"/>
+        FontSize="30"/>
         <Button x:Name="ordersListButton" 
-        Content="Список заказов"  
+        Content="Список заказов"
+        Command="{Binding DataContext.OpenOrdersCommand, RelativeSource={RelativeSource AncestorType=Window}}"
         Margin="30" 
         Padding="20" 
-        FontSize="30" Click="OrdersListButton_Click"/>
+        FontSize="30"/>
     </StackPanel>
 </Window>

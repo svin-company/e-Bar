@@ -1,5 +1,5 @@
 ﻿using eBar.Core.Model;
-using eBar.WaiterApp.Service;
+using eBar.WaiterApp.Service.Interfaces;
 using eBar.WaiterApp.ViewModel;
 
 namespace eBar.WaiterApp.Commands

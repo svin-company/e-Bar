@@ -2,6 +2,7 @@
 using eBar.DataStorage.Exceptions;
 using eBar.DataStorage.Services.Interfaces;
 using eBar.WaiterApp.Commands;
+using eBar.WaiterApp.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -13,7 +14,9 @@ namespace eBar.WaiterApp.ViewModel
         public ObservableCollection<TableViewModel> Tables { get; set; }
         private readonly ITableService _tableService;
         private readonly IOrderService _orderService;
+        private readonly IDialogService _dialogService;
         private readonly IWaiterService _waiterService;
+        private readonly IServiceProvider _serviceProvider;
         private TableViewModel _selectedTable;
         public TableViewModel SelectedTable
         {
@@ -50,16 +53,18 @@ namespace eBar.WaiterApp.ViewModel
                 foreach (var order in orders)
                 {
                     var items = await _orderService.GetItemsByIdAsync(order.Id);
-
-                    order.OrderItems = items;
+                    var orderVM = new OrderViewModel(order);
+                    var itemsVM = new ObservableCollection<OrderItemViewModel>();
+                    foreach (var item in items) 
+                    {
+                       var itemVM = new OrderItemViewModel(item);
+                        itemsVM.Add(itemVM);
+                    }
+                    orderVM.OrderItems = itemsVM;
                     order.WaiterName = await _waiterService.GetByIdAsync(order.WaiterId);
-                }
-                foreach (var item in orders)
-                {
-                    var orderVM = new OrderViewModel(item);
+                    
                     OrdersForSelectedTable.Add(orderVM);
                 }
-                
             }
             catch (NoRecordsException ex)
             {
@@ -70,16 +75,22 @@ namespace eBar.WaiterApp.ViewModel
 
         public ICommand ChangeStatusCommand { get; }
         public ICommand DeleteOrderCommand { get; }
+        public ICommand ChangeItemsCommand { get; }
 
-        public OrderListViewModel(ITableService tableService, IOrderService orderService, IWaiterService waiterService)
+        public OrderListViewModel(ITableService tableService, IOrderService orderService, 
+            IWaiterService waiterService, IDialogService dialogService, IServiceProvider serviceProvider)
         {
             _tableService = tableService;
             _orderService = orderService;
             _waiterService = waiterService;
+            _dialogService = dialogService;
+            _serviceProvider = serviceProvider;
             OrdersForSelectedTable = new ObservableCollection<OrderViewModel>();
             LoadTable();
             ChangeStatusCommand = new ChangeOrderStatusCommand(orderService);
-            DeleteOrderCommand = new DeleteOrderCommand(orderService);
+            DeleteOrderCommand = new DeleteOrderCommand(orderService, this);
+            ChangeItemsCommand = new ChangeOrderItemsCommand(orderService, dialogService, serviceProvider);
+            _serviceProvider = serviceProvider;
         }
 
         private async void LoadTable()

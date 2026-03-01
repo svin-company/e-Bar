@@ -52,7 +52,7 @@ namespace eBar.DataStorage.Repositories
                     WHERE is_order_open = @orderStatus;";
             await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
-                return await connection.ExecuteScalarAsync<int>(query, new {orderStatus});
+                return await connection.ExecuteScalarAsync<int>(query, new { orderStatus });
             }
         }
 
@@ -75,13 +75,14 @@ namespace eBar.DataStorage.Repositories
             using var transaction = connection.BeginTransaction();
             try
             {
-                int statusid = await connection.ExecuteScalarAsync<int>(statusQuery, 
+                int statusid = await connection.ExecuteScalarAsync<int>(statusQuery,
                     new { isOrderOpen = order.IsOrderOpen }, transaction);
 
                 int orderId = await connection.ExecuteScalarAsync<int>(orderQuery,
-                    new { 
-                        OrderTime = order.OrderTime, 
-                        OrderStatusId = statusid, 
+                    new
+                    {
+                        OrderTime = order.OrderTime,
+                        OrderStatusId = statusid,
                         TableId = tableId,
                         WaiterId = waiterId
                     }, transaction);
@@ -94,8 +95,9 @@ namespace eBar.DataStorage.Repositories
                     await connection.ExecuteAsync(orderItemQuery, new
                     {
                         Amount = item.Amount,
-                        FoodId = item.Food.Id,
-                        OrderId = order.Id
+                        OrderId = order.Id,
+                        Food = item.Food,
+                        FoodId = item.FoodId,
                     }, transaction);
                 }
 
@@ -113,7 +115,7 @@ namespace eBar.DataStorage.Repositories
 
         }
 
-        public async Task <bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var query = @"DELETE from public.restaurant_order
                 WHERE id =@id;";
@@ -122,10 +124,7 @@ namespace eBar.DataStorage.Repositories
             {
                 result = await connection.ExecuteAsync(query, new { id });
             }
-            if (result >= 0)
-                return true;
-
-            return false;
+            return result > 0;
         }
 
         public async Task<IEnumerable<Order>> GetAll()
@@ -184,16 +183,16 @@ namespace eBar.DataStorage.Repositories
         public async Task<IEnumerable<OrderItem>> GetOrderItemsAsync(int orderId)
         {
             var query = @"SELECT 
-                i.id AS order_item_id,
+                i.id AS Id,
                 i.amount AS Amount,
                 i.food_id AS FoodId,
                 i.restaurant_order_id AS OrderId,
-                f.id AS food_id,
                 f.name AS Name,
                 f.price AS Price
                 FROM public.order_item i
                 JOIN public.food f ON i.food_id = f.id
                 WHERE i.restaurant_order_id = @orderId;";
+
             await using (var connection = new NpgsqlConnection(_dbConfigReader.Connection))
             {
                 var result = await connection.QueryAsync<OrderItem, Food, OrderItem>(
@@ -201,6 +200,7 @@ namespace eBar.DataStorage.Repositories
                     (item, food) =>
                     {
                         item.Food = food;
+                        item.FoodId = food.Id;
                         return item;
                     },
                     new { orderId },
@@ -209,5 +209,7 @@ namespace eBar.DataStorage.Repositories
                 return result;
             }
         }
+
+
     }
 }

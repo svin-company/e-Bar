@@ -1,6 +1,7 @@
 ﻿using eBar.Core.Model;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
 namespace eBar.WaiterApp.ViewModel
@@ -8,6 +9,7 @@ namespace eBar.WaiterApp.ViewModel
     public class OrderViewModel: ViewModelBase
     {
         private Order _order;
+        private ObservableCollection<OrderItemViewModel> _orderItems;
 
         public Order Order 
         {
@@ -24,24 +26,48 @@ namespace eBar.WaiterApp.ViewModel
             }  
         }
 
-        public ObservableCollection<OrderItemViewModel> OrderItems { get; set; }
+        public ObservableCollection<OrderItemViewModel> OrderItems 
+        {
+            get {
+                return _orderItems;
+            }
+            set
+            {
+                _orderItems = value;
+                SetOrderItems();
+                OnPropertyChanged(nameof(OrderItems));
+            }
+        }
         public int Id => Order.Id;
         public DateTime OrderTime => Order.OrderTime;
 
         public OrderViewModel(Order order)
         {
             Order = order;
-            ObservableCollection<OrderItemViewModel> orderViewModels = new();
-            OrderItems = [];
+            GetOrderItems();
+            OnPropertyChanged(nameof(OrderItems));
+        }
 
+        private void GetOrderItems()
+        {
+            OrderItems = [];
             foreach (var item in this.Order.OrderItems)
             {
                 var orderItemVM = new OrderItemViewModel(item);
                 OrderItems.Add(orderItemVM);
             }
-
-            OnPropertyChanged(nameof(OrderItems));
         }
+
+        private void SetOrderItems()
+        {
+            Order.OrderItems = [];
+            foreach (var item in OrderItems)
+            {
+                Order.OrderItems.Add(item.OrderItem);
+            }
+        }
+
+
         public string WaiterName
         {
             get => Order.WaiterName;

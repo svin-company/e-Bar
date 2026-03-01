@@ -1,4 +1,5 @@
 ﻿using eBar.Core.Model;
+using eBar.WaiterApp.Service.Interfaces;
 using eBar.WaiterApp.ViewModel;
 
 namespace eBar.WaiterApp.Service
@@ -8,29 +9,36 @@ namespace eBar.WaiterApp.Service
         public void DeleteItem(OrderViewModel order, OrderItemViewModel orderItem)
         {
             order.OrderItems.Remove(orderItem);
+            order.Order.OrderItems.Remove(orderItem.OrderItem);
         }
 
         public void AddFood(OrderViewModel order, Food food)
         {
             if (order.OrderItems != null)
             {
-                var existingOrderItem = order.OrderItems
+                var existingOrderItemVM = order.OrderItems
                     .Where(x => x.Food.Name.Equals(food.Name))
                     .FirstOrDefault();
-                if (existingOrderItem == null)
+                var existingOrderItemModel = order.Order.OrderItems
+                    .Where(x => x.Food.Name.Equals(food.Name))
+                    .FirstOrDefault();
+                if (existingOrderItemVM == null)
                 {
                     var orderItem = new OrderItem
                     {
                         Id = 1,
                         Food = food,
-                        Amount = 1
+                        FoodId = food.Id,
+                        Amount = 1,
+                        OrderId = order.Id,
                     };
                     var orderItemVM = new OrderItemViewModel(orderItem);
                     order.OrderItems.Add(orderItemVM);
+                    order.Order.OrderItems.Add(orderItem);
                 }
                 else
                 {
-                    existingOrderItem.Amount++;
+                    existingOrderItemVM.Amount++;
                 }
             }
             else
@@ -39,10 +47,13 @@ namespace eBar.WaiterApp.Service
                 {
                     Id = 1,
                     Food = food,
-                    Amount = 1
+                    FoodId = food.Id,
+                    Amount = 1,
+                    OrderId = order.Id,
                 };
                 var orderItemVM = new OrderItemViewModel(orderItem);
                 order.OrderItems.Add(orderItemVM);
+                order.Order.OrderItems.Add(orderItem);
             }
         }
     }
