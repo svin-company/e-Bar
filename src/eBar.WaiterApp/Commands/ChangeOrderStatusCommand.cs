@@ -5,7 +5,7 @@ namespace eBar.WaiterApp.Commands
 {
     public class ChangeOrderStatusCommand : BaseCommand
     {
-        public bool CanExecute(object parameter) => parameter is OrderViewModel;
+        public override bool CanExecute(object parameter) => parameter is OrderViewModel;
         private IOrderService _orderService;
 
         public ChangeOrderStatusCommand(IOrderService orderService)

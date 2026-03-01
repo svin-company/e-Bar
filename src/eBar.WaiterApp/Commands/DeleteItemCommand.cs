@@ -1,6 +1,7 @@
 ﻿using eBar.Core.Model;
 using eBar.DataStorage.Services.Interfaces;
 using eBar.WaiterApp.Service;
+using eBar.WaiterApp.Service.Interfaces;
 using eBar.WaiterApp.ViewModel;
 
 namespace eBar.WaiterApp.Commands

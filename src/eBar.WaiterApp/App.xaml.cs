@@ -5,7 +5,9 @@ using eBar.DataStorage.Repositories.Interfaces;
 using eBar.DataStorage.Services;
 using eBar.DataStorage.Services.Interfaces;
 using eBar.WaiterApp.Service;
+using eBar.WaiterApp.Service.Interfaces;
 using eBar.WaiterApp.ViewModel;
+using eBar.WaiterApp.Views.ChangeOrder;
 using eBar.WaiterApp.Views.Home;
 using eBar.WaiterApp.Views.NewOrder;
 using eBar.WaiterApp.Views.OrdersList;
@@ -27,15 +29,18 @@ namespace eBar.WaiterApp
                     services.AddTransient<HomeView>();
                     services.AddTransient<NewOrderView>();
                     services.AddTransient<OrdersListView>();
+                    services.AddTransient<ChangeOrderView>();
                     services.AddTransient<NewOrderViewModel>();
                     services.AddTransient<OrderListViewModel>();
                     services.AddTransient<HomeViewModel>();
                     services.AddTransient<OrderViewModel>();
+                    services.AddTransient<ChangeOrderViewModel>();
                     services.AddConfiguration();
                     services.AddTransient<DbConfigReader>();
                     services.AddRepositories();
                     services.AddServices();
                     services.AddTransient<IOrderAppService, OrderAppService>();
+                    services.AddTransient<IDialogService, DialogService>();
                 })
                 .Build();
         }

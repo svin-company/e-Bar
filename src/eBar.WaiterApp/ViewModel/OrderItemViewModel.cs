@@ -12,9 +12,9 @@ namespace eBar.WaiterApp.ViewModel
         }
 
         public int Id => OrderItem.Id;
-        public Food Food => OrderItem.Food;
         public decimal TotalPrice => OrderItem.TotalPrice;
         public int OrderId => OrderItem.OrderId;
+        public Food Food => OrderItem.Food;
 
         public int Amount
         {

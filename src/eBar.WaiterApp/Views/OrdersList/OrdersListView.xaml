@@ -15,6 +15,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" 
  Content="Cтол №"
@@ -28,12 +29,33 @@ Margin="5"
           ItemsSource="{Binding Tables}"
           SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
           DisplayMemberPath="Id" />
+
+            <Label Grid.Column="2" FontSize="15" 
+                   FontWeight="Bold" 
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Content" Value="Статус заказа: Неизвестно"/>
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedOrder.IsOrderOpen}" Value="True">
+                                <Setter Property="Content" Value="Статус заказа: Открыт"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding SelectedOrder.IsOrderOpen}" Value="False">
+                                <Setter Property="Content" Value="Статус заказа: Закрыт"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
@@ -44,9 +66,9 @@ Margin="5"
           SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                            <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}" Width="42"/>
                             <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding OrderTime, StringFormat ='dd/MM/yyyy'}" Width="80"/>
-                            <GridViewColumn Header="Официант" DisplayMemberBinding="{Binding WaiterName}" Width ="120"/>
+                            <GridViewColumn Header="Официант" DisplayMemberBinding="{Binding WaiterName}" Width ="130"/>
                             <GridViewColumn Header="Статус" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -95,31 +117,27 @@ Margin="5"
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0">
-                        <Label.Style>
-                            <Style TargetType="Label">
-                                <Setter Property="Content" Value="Статус заказа: Неизвестно"/>
-
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedOrder.IsOrderOpen}" Value="True">
-                                        <Setter Property="Content" Value="Статус заказа: Открыт"/>
-                                    </DataTrigger>
-
-                                    <DataTrigger Binding="{Binding SelectedOrder.IsOrderOpen}" Value="False">
-                                        <Setter Property="Content" Value="Статус заказа: Закрыт"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Label.Style>
-                    </Label>
-
-                    <Button Grid.Column="1"
-                         Content="Cменить статус заказа"
+                    
+                    <Button Grid.Column="0"
+                         Content="Cменить статус"
                          Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                          CommandParameter="{Binding  SelectedOrder}"
-                         Margin="10"/>
+                         Margin="15"/>
+                    
+                    <Button Grid.Column="1"
+                        Content="Изменить заказ"
+                        Command="{Binding DataContext.ChangeItemsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding  SelectedOrder}"
+                        Margin="15"/>
+
+                    <Button Grid.Column="2"
+                        Content="Удалить заказ"
+                        Background="Salmon"
+                        Command="{Binding DataContext.DeleteOrderCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding  SelectedOrder}"
+                        Margin="15"/>
                 </Grid>
             </Grid>
 

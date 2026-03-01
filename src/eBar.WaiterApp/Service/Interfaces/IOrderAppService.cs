@@ -1,7 +1,7 @@
 ﻿using eBar.Core.Model;
 using eBar.WaiterApp.ViewModel;
 
-namespace eBar.WaiterApp.Service
+namespace eBar.WaiterApp.Service.Interfaces
 {
     public interface IOrderAppService
     {

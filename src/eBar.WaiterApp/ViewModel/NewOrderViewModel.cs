@@ -4,7 +4,7 @@ using eBar.DataStorage.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using eBar.DataStorage.Exceptions;
-using eBar.WaiterApp.Service;
+using eBar.WaiterApp.Service.Interfaces;
 namespace eBar.WaiterApp.ViewModel
 {
     public class NewOrderViewModel: ViewModelBase
@@ -62,7 +62,7 @@ namespace eBar.WaiterApp.ViewModel
             LoadTables();
             AddCommand = new AddToOrderCommand(Order, _orderAppService);
             DeleteCommand = new DeleteItemCommand(Order, _orderAppService);
-            ConfirmCommand = new ConfirmCommand(Order, _orderService, OnOrderConfirmed);
+            ConfirmCommand = new ConfirmCreateOrderCommand(Order, _orderService, OnOrderConfirmed);
         }
 
         private async void LoadTables()
